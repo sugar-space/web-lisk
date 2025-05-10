@@ -1,0 +1,13 @@
+.DS_Store
+/node_modules/
+
+# React Router
+/.react-router/
+/build/
+
+/app/components/sugar/icons
+public/sprite.svg
+*.sol
+
+package-lock.json
+.env
