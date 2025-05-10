@@ -14,7 +14,7 @@ COPY ./package.json /app/
 COPY --from=development-dependencies-env /app/node_modules /app/node_modules
 COPY --from=build-env /app/build /app/build
 COPY --from=build-env /app/public /app/public
-# COPY --from=build-env /app/.env /app/.env
+COPY --from=build-env /app/.env /app/.env
 COPY --from=development-dependencies-env /app/.docker/apps/entry.sh /app/.docker/apps/entry.sh
 WORKDIR /app
 
