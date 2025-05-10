@@ -5,8 +5,6 @@ variables {
   ghcr_password = "ghcr_password"
   build_number  = "run_number"
   mode          = "production"
-  vite_be_url   = "place_vite_be_url"
-  vite_ws_url   = "place_vite_ws_url"
 }
 
 job "job-web-prod" {
@@ -31,8 +29,6 @@ job "job-web-prod" {
         NODE_IP = "${NOMAD_IP_http}"
         MODE    = "${var.mode}"
         BUILD_NUMBER = "${var.build_number}"
-        VITE_BE_URL = "${var.vite_be_url}"
-        VITE_WS_URL = "${var.vite_ws_url}"
       }
 
       driver = "docker"

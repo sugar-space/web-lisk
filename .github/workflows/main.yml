@@ -59,10 +59,11 @@ jobs:
       #     git commit -m "[skip actions] version bump to ${{ steps.version-bump.outputs.NEW_VERSION }}"
       #     git push
 
-      # - name: Search and replace value in ENV
-      #   run: |
-      #     sed -i "s|%BUILD_NUMBER|${{ github.run_number }}|g" .env
-      #     sed -i "s|%BUILD_NUMBER|${{ github.run_number }}|g" .env.production
+      - name: Search and replace value in ENV
+        run: |
+          echo "not such a secret; just avoiding harcoded .env"
+          echo -e 'VITE_BE_URL="https://api.sugarhub.space"' >> .env
+          echo -e 'VITE_WS_URL="wss://api.sugarhub.space"' >> .env
 
       - name: Build and push
         uses: docker/build-push-action@v5
