@@ -1,7 +1,7 @@
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
 import { createPublicClient, formatUnits, http, parseEther } from "viem"
-import { sepolia } from "viem/chains"
+import { sepolia, liskSepolia } from "viem/chains"
 import { CONTRACT_ADDRESS } from "~/constants/CA"
 import { COINS } from "~/constants/coins"
 import type { Route } from "../+types"
@@ -39,8 +39,10 @@ export async function loader({ request }: Route.LoaderArgs) {
   const filteredTokens = []
   if (checkAddress.data.success) {
     const client = createPublicClient({
-      chain: sepolia,
-      transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
+      chain: liskSepolia,
+      transport: http(),
+      // chain:  sepolia,
+      // transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
     })
 
     for (const token of COINS) {
@@ -70,6 +72,8 @@ export async function loader({ request }: Route.LoaderArgs) {
           functionName: "isTokenWhitelisted",
           args: [session, token.token_address],
         })
+
+        console.log("isTokenWhitelisted", token.name, token.token_address, isTokenWhitelisted)
 
         if (isTokenWhitelisted) {
           filteredTokens.push({

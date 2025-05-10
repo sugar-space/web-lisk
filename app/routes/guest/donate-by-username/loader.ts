@@ -1,15 +1,15 @@
-import { redirect } from "react-router";
-import { sepolia } from "viem/chains";
-import { createPublicClient, http } from "viem";
-import { getWalletSession } from "@services/cookie";
-import axios from "axios";
-import type { Route } from "./+types";
-import { COINS } from "~/constants/coins";
-import { ABI } from "~/constants/ABI";
-import { CONTRACT_ADDRESS } from "~/constants/CA";
+import { redirect } from "react-router"
+import { liskSepolia, sepolia } from "viem/chains"
+import { createPublicClient, http } from "viem"
+import { getWalletSession } from "@services/cookie"
+import axios from "axios"
+import type { Route } from "./+types"
+import { COINS } from "~/constants/coins"
+import { ABI } from "~/constants/ABI"
+import { CONTRACT_ADDRESS } from "~/constants/CA"
 
 export async function loader({ params, request }: Route.LoaderArgs) {
-  const session = await getWalletSession(request);
+  const session = await getWalletSession(request)
 
   try {
     const fromCheckAddress = await axios
@@ -22,23 +22,25 @@ export async function loader({ params, request }: Route.LoaderArgs) {
             success: false,
             username: "",
           },
-        };
-      });
+        }
+      })
 
     const creatorCheckAddress = await axios.get(
       `${process.env.VITE_BE_URL}/account/${params.username}`
-    );
+    )
 
     if (creatorCheckAddress.status !== 200) {
-      return redirect("/");
+      return redirect("/")
     }
 
     const client = createPublicClient({
-      chain: sepolia,
-      transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
-    });
+      chain: liskSepolia,
+      transport: http(),
+      // chain: sepolia,
+      // transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
+    })
 
-    const filteredTokens = [];
+    const filteredTokens = []
     for (const token of COINS) {
       if (token.token_address !== "0x0000000000000000000000000000000000000000") {
         const result = await client.readContract({
@@ -46,16 +48,16 @@ export async function loader({ params, request }: Route.LoaderArgs) {
           address: CONTRACT_ADDRESS,
           functionName: "isTokenWhitelisted",
           args: [creatorCheckAddress.data.address, token.token_address],
-        });
+        })
 
         if (result) {
           filteredTokens.push({
             ...token,
             allowed: true,
-          });
+          })
         }
       } else {
-        filteredTokens.push(token);
+        filteredTokens.push(token)
       }
     }
 
@@ -71,9 +73,9 @@ export async function loader({ params, request }: Route.LoaderArgs) {
         username: creatorCheckAddress.data.username,
         avatar: creatorCheckAddress.data.avatar ?? "https://placehold.co/50",
       },
-    };
+    }
   } catch (error) {
-    console.log(error);
-    return redirect("/");
+    console.log(error)
+    return redirect("/")
   }
 }

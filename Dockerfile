@@ -18,5 +18,6 @@ COPY --from=build-env /app/public /app/public
 COPY --from=development-dependencies-env /app/.docker/apps/entry.sh /app/.docker/apps/entry.sh
 WORKDIR /app
 
-RUN chmod +x .docker/apps/entry.sh
-ENTRYPOINT [".docker/apps/entry.sh"]
+# RUN chmod +x .docker/apps/entry.sh
+# ENTRYPOINT [".docker/apps/entry.sh"]
+CMD ["npm", "run", "start"]

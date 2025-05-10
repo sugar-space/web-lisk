@@ -1,16 +1,16 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
 
 export function Teams() {
   useGSAP(() => {
     gsap.set("#cards", {
       perspective: "900px",
-    });
+    })
 
     gsap.set("#cards article", {
       transformOrigin: "top center",
-    });
+    })
 
     document.querySelectorAll("#cards article").forEach((el, t) => {
       ScrollTrigger.create({
@@ -21,18 +21,18 @@ export function Teams() {
             rotationX: "-65deg",
             z: "-500px",
             opacity: 0,
-          });
+          })
 
           gsap.to(el, {
             rotationX: "0",
             z: "0",
             opacity: 1,
             delay: (t % 3) * 0.05,
-          });
+          })
         },
-      });
-    });
-  });
+      })
+    })
+  })
 
   return (
     <div
@@ -62,13 +62,13 @@ export function Teams() {
                     </div>
                   </div>
                 </article>
-              );
+              )
             })}
           </div>
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 const ITEMS = [
@@ -85,63 +85,63 @@ const ITEMS = [
     from: "Sugar",
   },
   {
-    name: "Bintang",
+    name: "Johanes",
     as: "Team",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/bintang.png",
+    image: "https://ik.imagekit.io/3592mo0vh/img/johanes.jpg",
     from: "Sugar",
   },
-  {
-    name: "YB",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/ybrap.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Tierison",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/tierison.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Yuka",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/yukatheo.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Garry",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/garryang.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Tepe 46",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/tepe46.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Niko",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/nikojuniusss.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Aloy",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/aloy.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Bravy",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/bravyson.png",
-    from: "A 4 A",
-  },
-  {
-    name: "Ibot",
-    as: "Reference",
-    image: "https://ik.imagekit.io/w0nuhbceop/a4a/ibottt.png",
-    from: "A 4 A",
-  },
-];
+  // {
+  //   name: "YB",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/ybrap.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Tierison",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/tierison.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Yuka",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/yukatheo.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Garry",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/garryang.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Tepe 46",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/tepe46.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Niko",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/nikojuniusss.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Aloy",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/aloy.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Bravy",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/bravyson.png",
+  //   from: "A 4 A",
+  // },
+  // {
+  //   name: "Ibot",
+  //   as: "Reference",
+  //   image: "https://ik.imagekit.io/w0nuhbceop/a4a/ibottt.png",
+  //   from: "A 4 A",
+  // },
+]

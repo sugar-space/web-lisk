@@ -4,7 +4,7 @@ variables {
   ghcr_username = "reiyanyan"
   ghcr_password = "ghcr_password"
   build_number  = "run_number"
-  mode          = "mode_env"
+  mode          = "production"
   vite_be_url   = "place_vite_be_url"
   vite_ws_url   = "place_vite_ws_url"
 }

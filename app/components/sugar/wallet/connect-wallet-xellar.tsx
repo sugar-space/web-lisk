@@ -70,7 +70,7 @@ export function ConnectWalletXellar() {
                             "Wrong Network"
                           ) : (
                             <>
-                              {`${address.slice(0, 6)}...${address?.slice(-4)}`}
+                              {chain?.name} ~ {`${address.slice(0, 6)}...${address?.slice(-4)}`}
                               <ChevronDown className="size-4 transition-transform" />
                             </>
                           )}
@@ -80,7 +80,7 @@ export function ConnectWalletXellar() {
                   </ClientOnly>
                 </div>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="center" className="w-48">
+              <DropdownMenuContent align="end" className="w-48">
                 {isWrongNetwork && (
                   <DropdownMenuItem
                     className="py-4"
