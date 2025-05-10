@@ -65,10 +65,6 @@ jobs:
           echo -e 'VITE_BE_URL="https://api.sugarhub.space"' >> .env
           echo -e 'VITE_WS_URL="wss://api.sugarhub.space"' >> .env
 
-      - name: debug
-        run: |
-          cat .env
-
       - name: Build and push
         uses: docker/build-push-action@v5
         id: push
