@@ -18,7 +18,7 @@ import { ConnectButton, useConnectModal } from "@xellar/kit"
 import axios from "axios"
 
 export function ConnectWalletXellar() {
-  const FIXED_CHAIN = sepolia.id
+  const FIXED_CHAIN = liskSepolia.id
   const submit = useSubmit()
   const { open: openModalXellar } = useConnectModal()
   const { isConnected, address, disconnect } = useSugarWallet()
