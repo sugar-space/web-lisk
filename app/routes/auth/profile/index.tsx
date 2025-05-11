@@ -1,15 +1,8 @@
-import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert"
-import { Input } from "@shadcn/input"
-import { ButtonMagnet } from "@sugar/button"
-import { ForwardLink } from "@sugar/button/arrow"
-import { Card } from "@sugar/card"
-import { AlertCircle, Check, Pencil } from "lucide-react"
-import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { redirect, useActionData, useLoaderData, useNavigate, useSubmit } from "react-router"
+import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@shadcn/form"
-import { useEffect, useState } from "react"
+import { Input } from "@shadcn/input"
+import { Switch } from "@shadcn/switch"
 import {
   Table,
   TableBody,
@@ -19,16 +12,23 @@ import {
   TableHeader,
   TableRow,
 } from "@shadcn/table"
-import { Switch } from "@shadcn/switch"
+import { ButtonMagnet } from "@sugar/button"
+import { ForwardLink } from "@sugar/button/arrow"
+import { Card } from "@sugar/card"
+import { AlertCircle, Check, Pencil } from "lucide-react"
+import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form"
+import { useActionData, useNavigate, useSubmit } from "react-router"
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
+import { z } from "zod"
 import { ABI } from "~/constants/ABI"
 import { CONTRACT_ADDRESS } from "~/constants/CA"
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
-import type { Route } from "./+types"
 import { cn } from "~/utils/cn"
-import { useWatchAsset } from "~/utils/watchers"
 import { getSocialMetas } from "~/utils/seo"
+import { useWatchAsset } from "~/utils/watchers"
+import type { Route } from "./+types"
 
-export { loader, action } from "./utils/action-loader"
+export { action, loader } from "./utils/action-loader"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -158,8 +158,8 @@ export default function ({ loaderData }: Route.ComponentProps) {
       {flashMsg && (
         <Alert variant="green">
           <Check className="h-4 w-4" />
-          <AlertTitle>Succeed</AlertTitle>
-          <AlertDescription>Successfully set username!</AlertDescription>
+          <AlertTitle>Success</AlertTitle>
+          <AlertDescription>Your profile has been updated successfully!</AlertDescription>
         </Alert>
       )}
       <Card

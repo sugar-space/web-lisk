@@ -1,27 +1,26 @@
 // import type { Route } from "./+types/donate-by-username";
-import { ButtonMagnet } from "@sugar/button"
-import { ChevronDown } from "lucide-react"
-import { Input } from "@shadcn/input"
-import { InputAmount } from "@sugar/input-amount"
-import { Textarea } from "@shadcn/textarea"
-import { LogoStaticAnimated } from "@sugar/logo-static-animated"
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { ClientOnly } from "remix-utils/client-only"
+import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@shadcn/drawer"
+import { Input } from "@shadcn/input"
+import { Textarea } from "@shadcn/textarea"
+import { ButtonMagnet } from "@sugar/button"
 import { ButtonArrow } from "@sugar/button/arrow"
-import BN from "bn.js"
-import { ABI } from "~/constants/ABI"
-import { parseEther } from "viem"
-import { useWriteContract, useWaitForTransactionReceipt } from "wagmi"
-import { Alert, AlertTitle, AlertDescription } from "@shadcn/alert"
-import { AlertCircle, Check } from "lucide-react"
-import type { Route } from "./+types"
-import { COINS, type CoinItemType } from "~/constants/coins"
-import { CONTRACT_ADDRESS } from "~/constants/CA"
-import { getSocialMetas } from "~/utils/seo"
+import { InputAmount } from "@sugar/input-amount"
+import { LogoStaticAnimated } from "@sugar/logo-static-animated"
 import { ConnectWalletXellar } from "@sugar/wallet/connect-wallet-xellar"
 import { useSugarWallet } from "@sugar/wallet/provider"
+import axios from "axios"
+import BN from "bn.js"
+import { AlertCircle, Check, ChevronDown } from "lucide-react"
+import { useEffect, useState } from "react"
+import { ClientOnly } from "remix-utils/client-only"
+import { parseEther } from "viem"
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
+import { ABI } from "~/constants/ABI"
+import { CONTRACT_ADDRESS } from "~/constants/CA"
+import { COINS, type CoinItemType } from "~/constants/coins"
+import { getSocialMetas } from "~/utils/seo"
+import type { Route } from "./+types"
 
 export { loader } from "./loader"
 
@@ -43,6 +42,10 @@ export default function ({ loaderData }: Route.ComponentProps) {
   const [isApproved, setIsApproved] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const { address: addressConnected } = useSugarWallet()
+  const [fromClient, setFromClient] = useState<null | {
+    username: string
+    isAlreadySetUsername: boolean
+  }>(null)
 
   const [alert, setAlert] = useState<{
     type: "success" | "error" | "info"
@@ -136,20 +139,6 @@ export default function ({ loaderData }: Route.ComponentProps) {
     }
   }
 
-  useEffect(() => {
-    if (ethReceipt?.status === "success") {
-      setAlert({
-        type: "success",
-        title: "Donation Successful",
-        description: "Your donation was successful!",
-      })
-    }
-
-    if (sendHash) {
-      saveTransaction(sendHash)
-    }
-  }, [ethReceipt])
-
   /* -------------------------------------------------------------------------- */
   /*                                 ERC20 Token                                */
   /* -------------------------------------------------------------------------- */
@@ -206,6 +195,21 @@ export default function ({ loaderData }: Route.ComponentProps) {
     }
   }
 
+  // watch ETH receipt
+  useEffect(() => {
+    if (ethReceipt?.status === "success") {
+      setAlert({
+        type: "success",
+        title: "Donation Successful",
+        description: "Your donation was successful!",
+      })
+    }
+
+    if (sendHash) {
+      saveTransaction(sendHash)
+    }
+  }, [ethReceipt])
+
   // watch approval succeed or not
   useEffect(() => {
     if (approveReceipt?.status === "success" && !isApproved) {
@@ -248,6 +252,35 @@ export default function ({ loaderData }: Route.ComponentProps) {
       saveTransaction(donateHash)
     }
   }, [donateReceipt])
+
+  // watch connected address
+  useEffect(() => {
+    const fetchClientFrom = async () => {
+      try {
+        const res = await axios.post(`${import.meta.env.VITE_BE_URL}/account/check`, {
+          address: addressConnected,
+        })
+
+        if (res.data.success) {
+          setFromClient({
+            username: res.data.username,
+            isAlreadySetUsername: true,
+          })
+
+          setForm((prev) => ({
+            ...prev,
+            from: res.data.username + " 🍭",
+          }))
+        }
+      } catch (err) {
+        console.error("Failed to fetch client-side username", err)
+      }
+    }
+
+    if (addressConnected && !from.isAlreadySetUsername && form.from === "Someone") {
+      fetchClientFrom()
+    }
+  }, [addressConnected])
 
   /* -------------------------------------------------------------------------- */
   /*                             loading management                             */
@@ -354,22 +387,17 @@ export default function ({ loaderData }: Route.ComponentProps) {
 
         <div className="border border-white/40 rounded-xl flex flex-col gap-2 p-5">
           <p>From:</p>
-          {from.isAlreadySetUsername && (
+          {from.isAlreadySetUsername || fromClient?.isAlreadySetUsername ? (
             <p className="rounded-md bg-transparent px-3 py-1 text-base shadow-xs italic">
-              {from.username + " 🍭"}
+              {(fromClient?.username || from.username) + " 🍭"}
             </p>
-          )}
-          {!from.isAlreadySetUsername && (
+          ) : (
             <Input
               placeholder="from"
               className="dark:bg-transparent focus-visible:ring-0 placeholder:text-white/70 border-white/70 focus-visible:border-white md:text-lg h-max"
               type="text"
               value={form.from}
-              onChange={(e) =>
-                setForm((prev) => {
-                  return { ...prev, from: e.target.value }
-                })
-              }
+              onChange={(e) => setForm((prev) => ({ ...prev, from: e.target.value }))}
             />
           )}
         </div>
