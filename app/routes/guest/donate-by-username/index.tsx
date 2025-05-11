@@ -66,6 +66,24 @@ export default function ({ loaderData }: Route.ComponentProps) {
     setIsOpen(false)
   }
 
+  function handleChangeAmount(e: React.ChangeEvent<HTMLInputElement>) {
+    const rawValue = e.target.value
+
+    if (rawValue === "") {
+      setForm((prev) => ({ ...prev, amount: 0 }))
+      return
+    }
+
+    const numericValue = Number(rawValue)
+
+    if (!isNaN(numericValue) && numericValue >= 0) {
+      setForm((prev) => ({
+        ...prev,
+        amount: numericValue,
+      }))
+    }
+  }
+
   /* ------------------------ fetch // axios to backend ----------------------- */
   async function saveTransaction(sendHash: string) {
     try {
@@ -339,27 +357,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
         </div>
         <div className="p-5 border border-white/40 rounded-xl flex flex-row items-center">
           <div className="flex flex-col gap-2 grow">
-            <InputAmount
-              placeholder="0"
-              value={form.amount}
-              onChange={(e) => {
-                const rawValue = e.target.value
-
-                if (rawValue === "") {
-                  setForm((prev) => ({ ...prev, amount: 0 }))
-                  return
-                }
-
-                const numericValue = Number(rawValue)
-
-                if (!isNaN(numericValue) && numericValue >= 0) {
-                  setForm((prev) => ({
-                    ...prev,
-                    amount: numericValue,
-                  }))
-                }
-              }}
-            />
+            <InputAmount placeholder="0" value={form.amount} onChange={handleChangeAmount} />
             <p className="px-3">$0</p>
           </div>
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
