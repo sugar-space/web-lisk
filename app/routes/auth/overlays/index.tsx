@@ -1,13 +1,13 @@
-import { getWalletSession } from "@services/cookie";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shadcn/tabs";
-import axios from "axios";
-import { AlertCircle, Check, Copy } from "lucide-react";
-import { redirect, useActionData, useFetcher, useLoaderData } from "react-router";
-import type { Route } from "./+types";
-import { useEffect, useState } from "react";
-import { ButtonMagnet } from "@sugar/button";
-import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert";
-import { getSocialMetas } from "~/utils/seo";
+import { getWalletSession } from "@services/cookie"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@shadcn/tabs"
+import axios from "axios"
+import { AlertCircle, Check, Copy } from "lucide-react"
+import { redirect, useActionData, useFetcher, useLoaderData } from "react-router"
+import type { Route } from "./+types"
+import { useEffect, useState } from "react"
+import { ButtonMagnet } from "@sugar/button"
+import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert"
+import { getSocialMetas } from "~/utils/seo"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -16,48 +16,48 @@ export function meta({}: Route.MetaArgs) {
       description: "Overlay Sugar - Spread sweetness into communities, streamer in web3.",
       path: "/",
     }),
-  ];
+  ]
 }
 
 export async function action({ request }: Route.ActionArgs) {
-  if (request.method !== "POST") return;
+  if (request.method !== "POST") return
 
-  const body = await request.formData();
-  const jsonData = Object.fromEntries(body.entries());
-  const session = await getWalletSession(request);
+  const body = await request.formData()
+  const jsonData = Object.fromEntries(body.entries())
+  const session = await getWalletSession(request)
 
-  console.log(`${process.env.VITE_BE_URL}/dev/${jsonData.type}/${session}/USDC`);
+  console.log(`${process.env.VITE_BE_URL}/dev/${jsonData.type}/${session}/USDC`)
 
-  await axios.get(`${process.env.VITE_BE_URL}/dev/${jsonData.type}/${session}/USDC`).then().catch();
+  await axios.get(`${process.env.VITE_BE_URL}/dev/${jsonData.type}/${session}/USDC`).then().catch()
 
   return {
     success: true,
-  };
+  }
 }
 
 export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getWalletSession(request);
+  const session = await getWalletSession(request)
 
   const isSetUsername = await axios.post(`${process.env.VITE_BE_URL}/account/check`, {
     address: session,
-  });
+  })
 
   if (!isSetUsername.data.success) {
-    return redirect("/profile");
+    return redirect("/profile")
   } else {
     return {
       address: isSetUsername.data.address,
-    };
+    }
   }
 }
 
 export default function OverlaysPage() {
-  const fetcher = useFetcher();
-  const loaderData = useLoaderData<typeof loader>();
-  const { address: addressSession } = loaderData;
+  const fetcher = useFetcher()
+  const loaderData = useLoaderData<typeof loader>()
+  const { address: addressSession } = loaderData
 
-  const [isCopied, setIsCopied] = useState(false);
-  const [isSuccedTest, setIsSuccedTest] = useState(false);
+  const [isCopied, setIsCopied] = useState(false)
+  const [isSuccedTest, setIsSuccedTest] = useState(false)
 
   const tabs = [
     "alerts",
@@ -66,34 +66,34 @@ export default function OverlaysPage() {
     // "leaderboard-WIP",
     // "auction-WIP",
     // "voting-WIP",
-  ];
+  ]
 
   function testNotification(val: string) {
-    fetcher.submit({ type: val }, { method: "POST" });
+    fetcher.submit({ type: val }, { method: "POST" })
   }
 
   function handleCopy(val: string) {
-    navigator.clipboard.writeText(val);
-    setIsCopied(true);
+    navigator.clipboard.writeText(val)
+    setIsCopied(true)
   }
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIsCopied(false);
-      clearInterval(timer);
-    }, 1000 * 1.5);
-  }, [isCopied]);
+      setIsCopied(false)
+      clearInterval(timer)
+    }, 1000 * 1.5)
+  }, [isCopied])
 
   useEffect(() => {
     if (fetcher.data) {
-      setIsSuccedTest(true);
+      setIsSuccedTest(true)
 
       const timer = setInterval(() => {
-        setIsSuccedTest(false);
-        clearInterval(timer);
-      }, 1000 * 2);
+        setIsSuccedTest(false)
+        clearInterval(timer)
+      }, 1000 * 2)
     }
-  }, [fetcher.data]);
+  }, [fetcher.data])
 
   return (
     <>
@@ -137,10 +137,10 @@ export default function OverlaysPage() {
                 Test {val}
               </ButtonMagnet>
             </div>
-            <p className=" italic">soon settings dialog here</p>
+            {/* <p className=" italic">soon settings dialog here</p> */}
           </TabsContent>
         ))}
       </Tabs>
     </>
-  );
+  )
 }
