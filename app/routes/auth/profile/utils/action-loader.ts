@@ -1,4 +1,4 @@
-import { adventurer } from '@dicebear/collection'
+import { funEmoji } from '@dicebear/collection'
 import { createAvatar } from '@dicebear/core'
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
@@ -34,7 +34,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     address: session,
   })
 
-  let avatar = createAvatar(adventurer, {
+  let avatar = createAvatar(funEmoji, {
     seed: session,
   }).toDataUri();
 
