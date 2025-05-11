@@ -24,7 +24,12 @@ export async function loader({ request }: Route.LoaderArgs) {
   const session = await getWalletSession(request)
 
   const trxRes = await axios.get<{ data: TransactionItem[] }>(
-    `${process.env.VITE_BE_URL}/trx/summary/${session}`
+    `${process.env.VITE_BE_URL}/trx/summary/${session}`,
+    {
+      params: {
+        limit: 1000,
+      },
+    }
   )
   const summary = trxRes.data.data
 
