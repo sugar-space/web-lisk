@@ -301,9 +301,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
           <div className="flex flex-col gap-2">
             <p className="text-2xl font-bold">{creator.username}</p>
             <p className="text-xs">{creator.address}</p>
-            <p className="tracking-wider">
-              Thank you for making me richer than you! Much love from me xx {creator.username}
-            </p>
+            <p className="tracking-wider">{creator.bio}</p>
           </div>
         </div>
         <div className="p-5 border border-white/40 rounded-xl flex flex-row items-center">

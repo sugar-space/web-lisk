@@ -15,6 +15,7 @@ export async function action({ request }: Route.ActionArgs) {
   const saveUser = await axios.post(`${process.env.VITE_BE_URL}/account`, {
     address: jsonData.address,
     username: jsonData.username,
+    bio: jsonData.bio,
   })
 
   return {
@@ -35,6 +36,8 @@ export async function loader({ request }: Route.LoaderArgs) {
       .get(`${process.env.VITE_BE_URL}/account/${checkAddress.data.username}`)
       .then((res) => res.data.avatar ?? "https://placehold.co/50")
   }
+
+  console.log(checkAddress)
 
   const filteredTokens = []
   if (checkAddress.data.success) {
@@ -92,6 +95,7 @@ export async function loader({ request }: Route.LoaderArgs) {
     isAlreadySetUsername: checkAddress.data.success,
     address: session,
     username: checkAddress.data.username,
+    bio: checkAddress.data.bio,
     avatar,
     filteredTokens,
   }

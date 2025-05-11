@@ -1,15 +1,15 @@
-import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert";
-import { Input } from "@shadcn/input";
-import { ButtonMagnet } from "@sugar/button";
-import { ForwardLink } from "@sugar/button/arrow";
-import { Card } from "@sugar/card";
-import { AlertCircle, Check, Pencil } from "lucide-react";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { redirect, useActionData, useLoaderData, useNavigate, useSubmit } from "react-router";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@shadcn/form";
-import { useEffect, useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@shadcn/alert"
+import { Input } from "@shadcn/input"
+import { ButtonMagnet } from "@sugar/button"
+import { ForwardLink } from "@sugar/button/arrow"
+import { Card } from "@sugar/card"
+import { AlertCircle, Check, Pencil } from "lucide-react"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { redirect, useActionData, useLoaderData, useNavigate, useSubmit } from "react-router"
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@shadcn/form"
+import { useEffect, useState } from "react"
 import {
   Table,
   TableBody,
@@ -18,17 +18,17 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@shadcn/table";
-import { Switch } from "@shadcn/switch";
-import { ABI } from "~/constants/ABI";
-import { CONTRACT_ADDRESS } from "~/constants/CA";
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi";
-import type { Route } from "./+types";
-import { cn } from "~/utils/cn";
-import { useWatchAsset } from "~/utils/watchers";
-import { getSocialMetas } from "~/utils/seo";
+} from "@shadcn/table"
+import { Switch } from "@shadcn/switch"
+import { ABI } from "~/constants/ABI"
+import { CONTRACT_ADDRESS } from "~/constants/CA"
+import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
+import type { Route } from "./+types"
+import { cn } from "~/utils/cn"
+import { useWatchAsset } from "~/utils/watchers"
+import { getSocialMetas } from "~/utils/seo"
 
-export { loader, action } from "./utils/action-loader";
+export { loader, action } from "./utils/action-loader"
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -37,21 +37,22 @@ export function meta({}: Route.MetaArgs) {
       description: "Profile Sugar - Spread sweetness into communities, streamer in web3.",
       path: "/",
     }),
-  ];
+  ]
 }
 
 export default function ({ loaderData }: Route.ComponentProps) {
-  const navigate = useNavigate();
-  const actionData = useActionData();
-  const submit = useSubmit();
-  const { isAlreadySetUsername, address, username, avatar, filteredTokens } = loaderData;
-  const [flashMsg, setFlashMsg] = useState(false);
-  const [isLoadingTokenControl, setIsLoadingTokenControl] = useState(false);
+  const navigate = useNavigate()
+  const actionData = useActionData()
+  const submit = useSubmit()
+  const { isAlreadySetUsername, address, username, avatar, filteredTokens, bio } = loaderData
+  const [flashMsg, setFlashMsg] = useState(false)
+  const [isLoadingTokenControl, setIsLoadingTokenControl] = useState(false)
 
   const form = useForm({
     resolver: zodResolver(
       z.object({
         username: z.string().min(2, "Username must be at least 2 characters"),
+        bio: z.string().min(2, "Bio must be at least 2 characters"),
         address: z
           .string()
           .min(42, "Address must be at least 42 characters")
@@ -61,17 +62,18 @@ export default function ({ loaderData }: Route.ComponentProps) {
     defaultValues: {
       username: username,
       address: address,
+      bio: bio,
     },
-  });
+  })
 
   const onSubmit = form.handleSubmit(
     (data, e) => {
-      submit(data, { method: "POST", action: "/profile" });
+      submit(data, { method: "POST", action: "/profile" })
     },
     (error) => {
-      console.log(error);
+      console.log(error)
     }
-  );
+  )
 
   /* -------------------------------------------------------------------------- */
   /*                              Toggle Whitelist                              */
@@ -80,11 +82,11 @@ export default function ({ loaderData }: Route.ComponentProps) {
     data: dataToggle,
     writeContract: writeToggle,
     isPending: isTogglePending,
-  } = useWriteContract();
+  } = useWriteContract()
 
   const { data: receiptToggle, isLoading: isReceiptToggleLoading } = useWaitForTransactionReceipt({
     hash: dataToggle,
-  });
+  })
 
   function handleToggleTokenWhitelist(tokenAddress: string, val: boolean) {
     writeToggle({
@@ -92,7 +94,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
       address: CONTRACT_ADDRESS,
       functionName: "setWhitelistToken",
       args: [tokenAddress, val],
-    });
+    })
   }
 
   /* -------------------------------------------------------------------------- */
@@ -102,14 +104,14 @@ export default function ({ loaderData }: Route.ComponentProps) {
     data: dataWithdraw,
     writeContract: writeWithdraw,
     isPending: isWithdrawPending,
-  } = useWriteContract();
+  } = useWriteContract()
 
   const { data: receiptWithdraw, isLoading: isWithdrawReceiptLoading } =
     useWaitForTransactionReceipt({
       hash: dataWithdraw,
-    });
+    })
 
-  const { watchAsset } = useWatchAsset();
+  const { watchAsset } = useWatchAsset()
 
   function handleWithdraw(tokenAddress: string) {
     writeWithdraw({
@@ -117,32 +119,32 @@ export default function ({ loaderData }: Route.ComponentProps) {
       address: CONTRACT_ADDRESS,
       functionName: "withdrawCreatorFunds",
       args: [tokenAddress],
-    });
+    })
   }
 
   useEffect(() => {
     if (actionData && actionData["success"]) {
-      setFlashMsg(true);
+      setFlashMsg(true)
       const timeout = setTimeout(() => {
-        setFlashMsg(false);
-        navigate("/profile", { replace: true, preventScrollReset: true });
-        clearTimeout(timeout);
-      }, 1000);
+        setFlashMsg(false)
+        navigate("/profile", { replace: true, preventScrollReset: true })
+        clearTimeout(timeout)
+      }, 1000)
     }
-  }, [actionData]);
+  }, [actionData])
 
   useEffect(() => {
     const loading =
-      isTogglePending || isReceiptToggleLoading || isWithdrawPending || isWithdrawReceiptLoading;
+      isTogglePending || isReceiptToggleLoading || isWithdrawPending || isWithdrawReceiptLoading
 
-    setIsLoadingTokenControl(loading);
+    setIsLoadingTokenControl(loading)
     if (!loading) {
       const timeout = setTimeout(() => {
-        navigate("/profile", { replace: true, preventScrollReset: true });
-        clearTimeout(timeout);
-      }, 100);
+        navigate("/profile", { replace: true, preventScrollReset: true })
+        clearTimeout(timeout)
+      }, 100)
     }
-  }, [isTogglePending, isReceiptToggleLoading, isWithdrawPending, isWithdrawReceiptLoading]);
+  }, [isTogglePending, isReceiptToggleLoading, isWithdrawPending, isWithdrawReceiptLoading])
 
   return (
     <div className="flex flex-col gap-8">
@@ -223,6 +225,27 @@ export default function ({ loaderData }: Route.ComponentProps) {
                     </FormItem>
                   )}
                 />
+
+                <FormField
+                  control={form.control}
+                  name="bio"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="flex flex-row justify-between">
+                        Bio
+                        <FormMessage className="text-xs" />
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="Set bio here..."
+                          className="dark:bg-transparent focus-visible:ring-0 placeholder:text-white/70 border-white/70 focus-visible:border-white md:text-lg h-max"
+                          {...field}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+
                 <div className="flex justify-start">
                   <ButtonMagnet color="green" type="submit">
                     Save Changes
@@ -306,5 +329,5 @@ export default function ({ loaderData }: Route.ComponentProps) {
         </Card>
       )}
     </div>
-  );
+  )
 }

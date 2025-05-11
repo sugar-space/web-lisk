@@ -71,6 +71,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
       creator: {
         address: creatorCheckAddress.data.address,
         username: creatorCheckAddress.data.username,
+        bio: creatorCheckAddress.data.bio,
         avatar: creatorCheckAddress.data.avatar ?? "https://placehold.co/50",
       },
     }
