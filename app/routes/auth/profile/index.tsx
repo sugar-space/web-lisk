@@ -77,6 +77,21 @@ export default function ({ loaderData }: Route.ComponentProps) {
     }
   )
 
+  function renderBalanceSymbol(val: (typeof filteredTokens)[number]) {
+    const isNativeToken = val.token_address === "0x0000000000000000000000000000000000000000"
+
+    if (isNativeToken) {
+      if (balance?.value === 0n) {
+        return `0 ${val.symbol}`
+      }
+
+      const formatted = Number(formatUnits(balance?.value ?? 0n, 18)).toFixed(8)
+      return `${formatted} ${val.symbol}`
+    }
+
+    return `${val.balance} ${val.symbol}`
+  }
+
   /* -------------------------------------------------------------------------- */
   /*                              Toggle Whitelist                              */
   /* -------------------------------------------------------------------------- */
@@ -286,14 +301,18 @@ export default function ({ loaderData }: Route.ComponentProps) {
                       <p className="text-xs">{val.token_address}</p>
                     </div>
                   </TableCell>
+
                   <TableCell>
                     {val.token_address === "0x0000000000000000000000000000000000000000"
                       ? balance?.value === 0n
                         ? "0"
                         : Number(formatUnits(balance?.value ?? 0n, 18)).toFixed(8)
-                      : val.balance}{" "}
+                      : val.balance}
                     ${val.symbol}
                   </TableCell>
+
+                  <TableCell>{renderBalanceSymbol(val)}</TableCell>
+
                   <TableCell>
                     <Switch
                       className="cursor-pointer"
