@@ -1,11 +1,14 @@
+import { adventurer } from '@dicebear/collection'
+import { createAvatar } from '@dicebear/core'
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
-import { createPublicClient, formatUnits, http, parseEther } from "viem"
-import { sepolia, liskSepolia } from "viem/chains"
+import { createPublicClient, formatUnits, http } from "viem"
+import { liskSepolia } from "viem/chains"
+import { ABI } from "~/constants/ABI"
 import { CONTRACT_ADDRESS } from "~/constants/CA"
 import { COINS } from "~/constants/coins"
 import type { Route } from "../+types"
-import { ABI } from "~/constants/ABI"
+
 export async function action({ request }: Route.ActionArgs) {
   if (request.method !== "POST") return
 
@@ -23,6 +26,7 @@ export async function action({ request }: Route.ActionArgs) {
   }
 }
 
+
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getWalletSession(request)
 
@@ -30,11 +34,13 @@ export async function loader({ request }: Route.LoaderArgs) {
     address: session,
   })
 
-  let avatar = `https://placehold.co/50x50/ffffff/000000?font=poppins&text=?`
+  let avatar = createAvatar(adventurer, {
+    seed: session,
+  }).toDataUri();
+
   if (checkAddress.data.success) {
-    avatar = await axios
-      .get(`${process.env.VITE_BE_URL}/account/${checkAddress.data.username}`)
-      .then((res) => res.data.avatar ?? "https://placehold.co/50")
+    const fetched = await axios.get(`${process.env.VITE_BE_URL}/account/${checkAddress.data.username}`);
+    avatar = fetched.data.avatar ?? avatar;
   }
 
   console.log(checkAddress)
