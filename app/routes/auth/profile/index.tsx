@@ -19,7 +19,8 @@ import { AlertCircle, Check, Pencil } from "lucide-react"
 import { useEffect, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useActionData, useNavigate, useSubmit } from "react-router"
-import { useWaitForTransactionReceipt, useWriteContract } from "wagmi"
+import { formatUnits } from "viem"
+import { useBalance, useWaitForTransactionReceipt, useWriteContract } from "wagmi"
 import { z } from "zod"
 import { ABI } from "~/constants/ABI"
 import { CONTRACT_ADDRESS } from "~/constants/CA"
@@ -47,6 +48,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
   const { isAlreadySetUsername, address, username, avatar, filteredTokens, bio } = loaderData
   const [flashMsg, setFlashMsg] = useState(false)
   const [isLoadingTokenControl, setIsLoadingTokenControl] = useState(false)
+  const { data: balance } = useBalance({ address })
 
   const form = useForm({
     resolver: zodResolver(
@@ -285,7 +287,12 @@ export default function ({ loaderData }: Route.ComponentProps) {
                     </div>
                   </TableCell>
                   <TableCell>
-                    {val.balance} ${val.symbol}
+                    {val.token_address === "0x0000000000000000000000000000000000000000"
+                      ? balance?.value === 0n
+                        ? "0"
+                        : Number(formatUnits(balance?.value ?? 0n, 18)).toFixed(8)
+                      : val.balance}{" "}
+                    ${val.symbol}
                   </TableCell>
                   <TableCell>
                     <Switch
