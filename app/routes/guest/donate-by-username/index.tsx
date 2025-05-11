@@ -309,11 +309,23 @@ export default function ({ loaderData }: Route.ComponentProps) {
             <InputAmount
               placeholder="0"
               value={form.amount}
-              onChange={(e) =>
-                setForm((prev) => {
-                  return { ...prev, amount: Number(e.target.value) }
-                })
-              }
+              onChange={(e) => {
+                const rawValue = e.target.value
+
+                if (rawValue === "") {
+                  setForm((prev) => ({ ...prev, amount: 0 }))
+                  return
+                }
+
+                const numericValue = Number(rawValue)
+
+                if (!isNaN(numericValue) && numericValue >= 0) {
+                  setForm((prev) => ({
+                    ...prev,
+                    amount: numericValue,
+                  }))
+                }
+              }}
             />
             <p className="px-3">$0</p>
           </div>
