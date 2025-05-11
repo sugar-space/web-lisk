@@ -28,7 +28,7 @@ import { getSocialMetas } from "~/utils/seo"
 import { useWatchAsset } from "~/utils/watchers"
 import type { Route } from "./+types"
 
-export { action, loader } from "./utils/action-loader"
+export { action, loader } from "../../../utils/action-loader"
 
 export function meta({}: Route.MetaArgs) {
   return [

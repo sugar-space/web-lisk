@@ -1,4 +1,3 @@
-import { getWalletSession } from "@services/cookie";
 import {
   Table,
   TableBody,
@@ -7,45 +6,24 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@shadcn/table";
-import { Card } from "@sugar/card";
-import { LogoStaticAnimated } from "@sugar/logo-static-animated";
-import type { Route } from "./+types";
-import axios from "axios";
-import { redirect, useLoaderData } from "react-router";
-import { ForwardLink } from "@sugar/button/arrow";
-import type { TransactionItem } from "../history";
-import { useState } from "react";
-import { Copy } from "lucide-react";
+} from "@shadcn/table"
+import { ForwardLink } from "@sugar/button/arrow"
+import { Card } from "@sugar/card"
+import { LogoStaticAnimated } from "@sugar/logo-static-animated"
+import { Copy } from "lucide-react"
+import { useState } from "react"
+import type { Route } from "./+types"
+export { action, loader } from "../../../utils/action-loader"
 
-export async function loader({ request }: Route.LoaderArgs) {
-  const session = await getWalletSession(request);
+export default function Dashboard({ loaderData }: Route.ComponentProps) {
+  const { summary, highestReceived, mostSweet, totalUsdt } = loaderData
 
-  const isSetUsername = await axios.post(`${process.env.VITE_BE_URL}/account/check`, {
-    address: session,
-  });
+  const [copiedHash, setCopiedHash] = useState<string | null>(null)
 
-  if (!isSetUsername.data.success) {
-    return redirect("/profile");
-  }
-
-  const summary = await axios
-    .get(`${process.env.VITE_BE_URL}/trx/summary/${session}`)
-    .then((res) => res.data.data);
-
-  return {
-    summary: summary as TransactionItem[],
-  };
-}
-
-export default function Dashboard() {
-  const loaderData = useLoaderData<typeof loader>();
-  const { summary } = loaderData;
-
-  const [isCopied, setIsCopied] = useState(false);
   function handleCopy(val: string) {
-    navigator.clipboard.writeText(val);
-    setIsCopied(true);
+    navigator.clipboard.writeText(val)
+    setCopiedHash(val)
+    setTimeout(() => setCopiedHash(null), 2000)
   }
 
   return (
@@ -54,7 +32,7 @@ export default function Dashboard() {
         <div className="col-span-1">
           <Card
             className="col-span-1"
-            title="Historic"
+            title="History"
             color="green"
             actions={
               <ForwardLink to="/history" className="text-inherit">
@@ -65,40 +43,45 @@ export default function Dashboard() {
             <Table>
               <TableCaption>A list of your recent transaction.</TableCaption>
               <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[100px]">Tx Hash</TableHead>
-                  {/* <TableHead>Address</TableHead> */}
-                  {/* <TableHead>Type</TableHead> */}
-                  <TableHead className="text-right">Amount</TableHead>
-                </TableRow>
+                {summary.length > 0 && (
+                  <TableRow>
+                    <TableHead className="w-[100px]">Tx Hash</TableHead>
+                    <TableHead className="text-right">Amount</TableHead>
+                  </TableRow>
+                )}
               </TableHeader>
               <TableBody>
-                {summary.map((val, id) => (
-                  <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
-                    <TableCell className="font-medium flex flex-row gap-2">
-                      {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
-                      {isCopied ? (
-                        <p className="italic">Copied!</p>
-                      ) : (
-                        <Copy
-                          className="cursor-pointer"
-                          onClick={() => handleCopy(val.transactionHash)}
-                        />
-                      )}
-                    </TableCell>
-                    {/* <TableCell>
-                      {val.from.slice(0, 6)}...{val.from?.slice(-4)}
-                    </TableCell> */}
-                    {/* <TableCell className="uppercase">{val.type}</TableCell> */}
-                    <TableCell className="text-right">
-                      {val.amount} {val.tokenType}
+                {summary.length > 0 ? (
+                  summary.map((val, id) => (
+                    <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
+                      <TableCell className="font-medium flex flex-row gap-2">
+                        {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
+                        {copiedHash === val.transactionHash ? (
+                          <p className="italic">Copied!</p>
+                        ) : (
+                          <Copy
+                            className="cursor-pointer"
+                            onClick={() => handleCopy(val.transactionHash)}
+                          />
+                        )}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        {val.amount} {val.tokenType}
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={2} className="text-center italic text-white/60">
+                      No transactions found.
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </Card>
         </div>
+
         <div className="col-span-1 flex flex-col gap-y-10">
           <Card title="Summary" color="orange">
             <div className="grid grid-cols-2 divide-x-2 gap-5">
@@ -108,18 +91,20 @@ export default function Dashboard() {
                   <br />
                   &asymp;
                 </p>
-                <p className="text-end text-5xl font-bold">99,12</p>
+                <p className="text-5xl font-bold">$ {totalUsdt.toFixed(2)}</p>
               </div>
+
               <div className="flex flex-col gap-5">
                 <p>
                   Highest
                   <br />
                   Received
                 </p>
-                <p className="text-end text-5xl font-bold">199,12</p>
+                <p className="text-5xl font-bold">{highestReceived} IDRX</p>
               </div>
             </div>
           </Card>
+
           <Card title="Achievements" color="pink">
             <div className="flex flex-col gap-5 pr-5">
               <p className="text-center">
@@ -127,9 +112,9 @@ export default function Dashboard() {
                 <br />
                 Sweet
               </p>
-              <p className="text-center text-5xl font-bold">99,12</p>
+              <p className="text-center text-5xl font-bold">{mostSweet.total} IDRX</p>
               <p className="text-xs text-white/80 text-center">
-                A biggest support to other author.
+                Biggest support from <span className="font-semibold">{mostSweet.name}</span>
               </p>
             </div>
           </Card>
@@ -138,5 +123,5 @@ export default function Dashboard() {
         </div>
       </div>
     </>
-  );
+  )
 }
