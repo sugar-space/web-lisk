@@ -13,7 +13,7 @@ import { LogoStaticAnimated } from "@sugar/logo-static-animated"
 import { Copy } from "lucide-react"
 import { useState } from "react"
 import type { Route } from "./+types"
-export { action, loader } from "../../../utils/action-loader"
+export { loader } from "./utils/action-loader"
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { summary, highestReceived, mostSweet, totalUsdt } = loaderData
