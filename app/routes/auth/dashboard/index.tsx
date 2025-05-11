@@ -52,7 +52,7 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
               </TableHeader>
               <TableBody>
                 {summary.length > 0 ? (
-                  summary.map((val, id) => (
+                  summary.slice(0, 9).map((val, id) => (
                     <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
                       <TableCell className="font-medium flex flex-row gap-2">
                         {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
