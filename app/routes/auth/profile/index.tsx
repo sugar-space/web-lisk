@@ -191,7 +191,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
           )
         }
       >
-        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start md:justify-center">
+        <div className="flex flex-col md:flex-row gap-8 items-center">
           <div className="group relative shrink-0">
             <img src={avatar} className="rounded-full size-48 sm:size-60 object-cover" />
             <div className="absolute inset-0 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
