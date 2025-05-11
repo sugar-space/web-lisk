@@ -1,5 +1,5 @@
-import { funEmoji } from '@dicebear/collection'
-import { createAvatar } from '@dicebear/core'
+import { funEmoji } from "@dicebear/collection"
+import { createAvatar } from "@dicebear/core"
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
 import { createPublicClient, formatUnits, http } from "viem"
@@ -26,54 +26,42 @@ export async function action({ request }: Route.ActionArgs) {
   }
 }
 
-
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getWalletSession(request)
 
-  const checkAddress = await axios.post(`${process.env.VITE_BE_URL}/account/check`, {
-    address: session,
-  })
+  const checkAddress = await axios.post<{ success: boolean; username: string; bio: string }>(
+    `${process.env.VITE_BE_URL}/account/check`,
+    { address: session }
+  )
 
-  let avatar = createAvatar(funEmoji, {
-    seed: session,
-  }).toDataUri();
-
+  let avatar = createAvatar(funEmoji, { seed: session }).toDataUri()
   if (checkAddress.data.success) {
-    const fetched = await axios.get(`${process.env.VITE_BE_URL}/account/${checkAddress.data.username}`);
-    avatar = fetched.data.avatar ?? avatar;
+    const fetched = await axios.get<{ avatar?: string }>(
+      `${process.env.VITE_BE_URL}/account/${checkAddress.data.username}`
+    )
+    avatar = fetched.data.avatar ?? avatar
   }
 
-  console.log(checkAddress)
-
   const filteredTokens = []
+
   if (checkAddress.data.success) {
-    const client = createPublicClient({
-      chain: liskSepolia,
-      transport: http(),
-      // chain:  sepolia,
-      // transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
-    })
+    const client = createPublicClient({ chain: liskSepolia, transport: http() })
 
     for (const token of COINS) {
-      let balance = await client.readContract({
+      let balanceRaw = await client.readContract({
         abi: ABI,
         address: CONTRACT_ADDRESS,
         functionName: "creatorBalances",
         args: [session, token.token_address],
       })
 
-      if (String(balance) == "0") {
-        balance = 0
-      } else {
-        balance = formatUnits(BigInt(String(balance)), token.decimals)
-      }
+      const balance =
+        String(balanceRaw) === "0"
+          ? 0
+          : parseFloat(formatUnits(BigInt(String(balanceRaw)), token.decimals))
 
       if (token.token_address === "0x0000000000000000000000000000000000000000") {
-        filteredTokens.push({
-          ...token,
-          allowed: true,
-          balance,
-        })
+        filteredTokens.push({ ...token, allowed: true, balance })
       } else {
         const isTokenWhitelisted = await client.readContract({
           abi: ABI,
@@ -81,28 +69,18 @@ export async function loader({ request }: Route.LoaderArgs) {
           functionName: "isTokenWhitelisted",
           args: [session, token.token_address],
         })
-
-        console.log("isTokenWhitelisted", token.name, token.token_address, isTokenWhitelisted)
-
-        if (isTokenWhitelisted) {
-          filteredTokens.push({
-            ...token,
-            allowed: true,
-            balance,
-          })
-        } else {
-          filteredTokens.push({ ...token, balance })
-        }
+        filteredTokens.push({ ...token, allowed: isTokenWhitelisted, balance })
       }
     }
   }
 
   return {
+    // profile
     isAlreadySetUsername: checkAddress.data.success,
     address: session,
     username: checkAddress.data.username,
-    bio: checkAddress.data.bio,
     avatar,
     filteredTokens,
+    bio: checkAddress.data.bio,
   }
 }

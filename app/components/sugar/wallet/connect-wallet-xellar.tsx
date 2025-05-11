@@ -1,5 +1,3 @@
-import { useEffect, useMemo } from "react"
-import { ButtonMagnet, ButtonMagnetVariantsVal, type ButtonMagnetVariants } from "@sugar/button"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,15 +5,17 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@shadcn/dropdown-menu"
-import { ClientOnly } from "remix-utils/client-only"
-import { useSugarWallet } from "./provider"
-import { ChevronDown, LogOut } from "lucide-react"
-import { NavLink, useSubmit } from "react-router"
+import { ButtonMagnet, ButtonMagnetVariantsVal, type ButtonMagnetVariants } from "@sugar/button"
 import { Icon } from "@sugar/icon"
-import { useAccount, useSwitchChain } from "wagmi"
-import { liskSepolia, sepolia } from "viem/chains"
 import { ConnectButton, useConnectModal } from "@xellar/kit"
 import axios from "axios"
+import { ChevronDown, LogOut } from "lucide-react"
+import { useEffect, useMemo } from "react"
+import { NavLink, useSubmit } from "react-router"
+import { ClientOnly } from "remix-utils/client-only"
+import { liskSepolia } from "viem/chains"
+import { useAccount, useSwitchChain } from "wagmi"
+import { useSugarWallet } from "./provider"
 
 export function ConnectWalletXellar() {
   const FIXED_CHAIN = liskSepolia.id
@@ -94,7 +94,7 @@ export function ConnectWalletXellar() {
                 )}
                 <NavLink to="/dashboard">
                   <DropdownMenuItem className="py-4">
-                    My Dashboard
+                    Dashboard
                     <DropdownMenuShortcut>
                       <Icon name="home" />
                     </DropdownMenuShortcut>
