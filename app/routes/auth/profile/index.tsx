@@ -302,15 +302,6 @@ export default function ({ loaderData }: Route.ComponentProps) {
                     </div>
                   </TableCell>
 
-                  <TableCell>
-                    {val.token_address === "0x0000000000000000000000000000000000000000"
-                      ? balance?.value === 0n
-                        ? "0"
-                        : Number(formatUnits(balance?.value ?? 0n, 18)).toFixed(8)
-                      : val.balance}
-                    ${val.symbol}
-                  </TableCell>
-
                   <TableCell>{renderBalanceSymbol(val)}</TableCell>
 
                   <TableCell>
