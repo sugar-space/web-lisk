@@ -322,14 +322,16 @@ export default function ({ loaderData }: Route.ComponentProps) {
   ])
 
   return (
-    <div className="container relative px-[20px] lg:px-[50px] py-16 h-screen justify-items-center">
+    <div className="container relative px-4 sm:px-[20px] lg:px-[50px] py-16 h-fit min-h-screen justify-items-center">
       <div className="flex flex-col gap-8 2xl:w-1/2 pb-20">
-        <div className="flex flex-row justify-end">
+        <div className="flex justify-end">
           <ConnectWalletXellar />
         </div>
-        <div className="flex flex-row justify-center my-8 lg:justify-start lg:mt-0">
-          <LogoStaticAnimated className="h-20 xl:h-24 w-max as" />
+
+        <div className="flex justify-center my-8 lg:justify-start lg:mt-0">
+          <LogoStaticAnimated className="h-20 xl:h-24 w-max" />
         </div>
+
         {alert && (
           <Alert
             variant={
@@ -338,8 +340,6 @@ export default function ({ loaderData }: Route.ComponentProps) {
           >
             {alert.type === "success" ? (
               <Check className="h-4 w-4" />
-            ) : alert.type === "error" ? (
-              <AlertCircle className="h-4 w-4" />
             ) : (
               <AlertCircle className="h-4 w-4" />
             )}
@@ -347,19 +347,22 @@ export default function ({ loaderData }: Route.ComponentProps) {
             <AlertDescription>{alert.description}</AlertDescription>
           </Alert>
         )}
-        <div className="p-5 border border-white/40 rounded-xl flex flex-row items-center gap-6">
-          <img src={creator.avatar} className="rounded-full size-20" />
-          <div className="flex flex-col gap-2">
+
+        <div className="p-5 border border-white/40 rounded-xl flex flex-col md:flex-row items-center gap-6">
+          <img src={creator.avatar} className="rounded-full size-20 shrink-0" />
+          <div className="flex flex-col gap-2 text-center md:text-left">
             <p className="text-2xl font-bold">{creator.username}</p>
-            <p className="text-xs">{creator.address}</p>
+            <p className="text-xs break-all text-white/70">{creator.address}</p>
             <p className="tracking-wider">{creator.bio}</p>
           </div>
         </div>
-        <div className="p-5 border border-white/40 rounded-xl flex flex-row items-center">
-          <div className="flex flex-col gap-2 grow">
+
+        <div className="p-5 border border-white/40 rounded-xl flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+          <div className="flex flex-col gap-2 grow w-full">
             <InputAmount placeholder="0" value={form.amount} onChange={handleChangeAmount} />
             <p className="px-3">$0</p>
           </div>
+
           <Drawer open={isOpen} onOpenChange={setIsOpen}>
             <ClientOnly>
               {() => (
@@ -372,6 +375,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
                 </ButtonMagnet>
               )}
             </ClientOnly>
+
             <DrawerContent className="pb-10">
               <div className="mx-auto w-full max-w-sm">
                 <DrawerHeader>
@@ -418,11 +422,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
             placeholder="message"
             className="resize-none dark:bg-transparent focus-visible:ring-0 placeholder:text-white/70 border-white/70 focus-visible:border-white md:text-lg h-max"
             value={form.message}
-            onChange={(e) =>
-              setForm((prev) => {
-                return { ...prev, message: e.target.value }
-              })
-            }
+            onChange={(e) => setForm((prev) => ({ ...prev, message: e.target.value }))}
           />
         </div>
 
@@ -432,11 +432,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
             placeholder="https://www.youtube.com/....."
             className="resize-none dark:bg-transparent focus-visible:ring-0 placeholder:text-white/70 border-white/70 focus-visible:border-white md:text-lg h-max"
             value={form.mediashare}
-            onChange={(e) =>
-              setForm((prev) => {
-                return { ...prev, mediashare: e.target.value }
-              })
-            }
+            onChange={(e) => setForm((prev) => ({ ...prev, mediashare: e.target.value }))}
           />
         </div>
 

@@ -35,9 +35,7 @@ export function ConnectWalletXellar() {
   async function handleDisconnect() {
     disconnect()
     submit(
-      {
-        disconnect: "",
-      },
+      { disconnect: "" },
       {
         action: "/connect",
         method: "post",
@@ -48,30 +46,38 @@ export function ConnectWalletXellar() {
 
   useEffect(() => {
     if (isConnected && address) {
-      axios.post("/connect", {
-        address,
-      })
+      axios.post("/connect", { address })
     }
   }, [isConnected, address])
 
   return (
-    <ConnectButton.Custom
-      children={() => (
+    <ConnectButton.Custom>
+      {() => (
         <>
           {isConnected ? (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <div>
+                <div className="max-w-full">
                   <ClientOnly>
                     {() => (
-                      <ButtonMagnet color={isWrongNetwork ? "yellow" : "orange"}>
-                        <div className="flex flex-row items-center gap-4">
+                      <ButtonMagnet
+                        color={isWrongNetwork ? "yellow" : "orange"}
+                        className="w-full sm:max-w-xs"
+                      >
+                        <div className="flex flex-wrap items-center justify-between gap-2 min-w-0">
                           {isWrongNetwork ? (
-                            "Wrong Network"
+                            <span className="text-sm">Wrong Network</span>
                           ) : (
                             <>
-                              {chain?.name} ~ {`${address.slice(0, 6)}...${address?.slice(-4)}`}
-                              <ChevronDown className="size-4 transition-transform" />
+                              <span className="text-sm truncate">
+                                <span className="hidden sm:inline">
+                                  {chain?.name} ~ {`${address.slice(0, 6)}...${address.slice(-4)}`}
+                                </span>
+                                <span className="inline sm:hidden">
+                                  {`${address.slice(0, 6)}...${address.slice(-4)}`}
+                                </span>
+                              </span>
+                              <ChevronDown className="size-4 shrink-0 transition-transform" />
                             </>
                           )}
                         </div>
@@ -125,12 +131,16 @@ export function ConnectWalletXellar() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <ButtonMagnet color={getColor ?? "orange"} onClick={openModalXellar}>
+            <ButtonMagnet
+              color={getColor ?? "orange"}
+              onClick={openModalXellar}
+              className="w-full sm:w-auto"
+            >
               Connect Wallet
             </ButtonMagnet>
           )}
         </>
       )}
-    />
+    </ConnectButton.Custom>
   )
 }

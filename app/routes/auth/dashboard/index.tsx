@@ -17,7 +17,6 @@ export { loader } from "./utils/action-loader"
 
 export default function Dashboard({ loaderData }: Route.ComponentProps) {
   const { summary, highestReceived, mostSweet, totalUsdt } = loaderData
-
   const [copiedHash, setCopiedHash] = useState<string | null>(null)
 
   function handleCopy(val: string) {
@@ -28,10 +27,9 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-x-10">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-y-10 md:gap-x-10">
         <div className="col-span-1">
           <Card
-            className="col-span-1"
             title="History"
             color="green"
             actions={
@@ -54,13 +52,15 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
                 {summary.length > 0 ? (
                   summary.slice(0, 9).map((val, id) => (
                     <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
-                      <TableCell className="font-medium flex flex-row gap-2">
-                        {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
+                      <TableCell className="font-medium flex flex-row gap-2 items-center">
+                        <span className="truncate max-w-[120px]">
+                          {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
+                        </span>
                         {copiedHash === val.transactionHash ? (
-                          <p className="italic">Copied!</p>
+                          <p className="italic text-xs text-green-400">Copied!</p>
                         ) : (
                           <Copy
-                            className="cursor-pointer"
+                            className="cursor-pointer shrink-0"
                             onClick={() => handleCopy(val.transactionHash)}
                           />
                         )}
@@ -84,42 +84,44 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
 
         <div className="col-span-1 flex flex-col gap-y-10">
           <Card title="Summary" color="orange">
-            <div className="grid grid-cols-2 divide-x-2 gap-5">
-              <div className="flex flex-col gap-5 pr-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 divide-y sm:divide-y-0 sm:divide-x gap-5">
+              <div className="flex flex-col gap-2 sm:pr-5 items-center sm:items-start text-center sm:text-left">
                 <p>
                   USDT
                   <br />
                   &asymp;
                 </p>
-                <p className="text-5xl font-bold">$ {totalUsdt.toFixed(2)}</p>
+                <p className="text-4xl sm:text-5xl font-bold">$ {totalUsdt.toFixed(2)}</p>
               </div>
 
-              <div className="flex flex-col gap-5">
+              <div className="flex flex-col gap-2 pt-5 sm:pt-0 items-center sm:items-start text-center sm:text-left">
                 <p>
                   Highest
                   <br />
                   Received
                 </p>
-                <p className="text-5xl font-bold">{highestReceived} IDRX</p>
+                <p className="text-4xl sm:text-5xl font-bold">{highestReceived} IDRX</p>
               </div>
             </div>
           </Card>
 
           <Card title="Achievements" color="pink">
-            <div className="flex flex-col gap-5 pr-5">
-              <p className="text-center">
+            <div className="flex flex-col gap-5 text-center">
+              <p>
                 Most
                 <br />
                 Sweet
               </p>
-              <p className="text-center text-5xl font-bold">{mostSweet.total} IDRX</p>
-              <p className="text-xs text-white/80 text-center">
+              <p className="text-4xl sm:text-5xl font-bold">{mostSweet.total} IDRX</p>
+              <p className="text-xs text-white/80">
                 Biggest support from <span className="font-semibold">{mostSweet.name}</span>
               </p>
             </div>
           </Card>
 
-          <LogoStaticAnimated />
+          <div className="self-center">
+            <LogoStaticAnimated />
+          </div>
         </div>
       </div>
     </>

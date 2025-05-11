@@ -191,14 +191,14 @@ export default function ({ loaderData }: Route.ComponentProps) {
           )
         }
       >
-        <div className="flex flex-row gap-8 items-center">
-          <div className="group relative">
-            <img src={avatar} className="rounded-full size-60" />
-            <div className="absolute inset-0 backdrop-blur-md h-full w-full rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Pencil className="text-green size-10 cursor-pointer" />
+        <div className="flex flex-col md:flex-row gap-8 items-center md:items-start md:justify-center">
+          <div className="group relative shrink-0">
+            <img src={avatar} className="rounded-full size-48 sm:size-60 object-cover" />
+            <div className="absolute inset-0 backdrop-blur-md rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <Pencil className="text-green size-8 sm:size-10 cursor-pointer" />
             </div>
           </div>
-          <div className="flex flex-col gap-8 w-1/2">
+          <div className="flex flex-col gap-6 w-full md:w-1/2">
             <Form {...form}>
               <form onSubmit={onSubmit} className="flex flex-col gap-6">
                 <FormField
@@ -298,7 +298,7 @@ export default function ({ loaderData }: Route.ComponentProps) {
                     <img src={val.icon} className="size-10 object-contain" />
                     <div className="flex flex-col gap-2">
                       <p>{val.symbol}</p>
-                      <p className="text-xs">{val.token_address}</p>
+                      <p className="text-xs break-all text-white/70">{val.token_address}</p>
                     </div>
                   </TableCell>
 
