@@ -1,13 +1,13 @@
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
-import { cn } from "~/utils/cn";
+import { useGSAP } from "@gsap/react"
+import gsap from "gsap"
+import { cn } from "~/utils/cn"
 
 export function TextDesc() {
   useGSAP(() => {
     gsap.set("#desc p", {
       opacity: 0,
       y: "50px",
-    });
+    })
 
     document.querySelectorAll("#desc p").forEach((el) => {
       gsap.to(el, {
@@ -19,9 +19,9 @@ export function TextDesc() {
           end: "top 65%",
           scrub: true,
         },
-      });
-    });
-  });
+      })
+    })
+  })
 
   return (
     <div
@@ -45,8 +45,9 @@ export function TextDesc() {
           only show your appreciation but also help creators thrive in their craft.
         </p>
         <p>
-          Our platform supports popular cryptocurrencies like ETH, USDC, and LINK, etc. Make it
-          simple for you to choose the perfect gift for the content creators you love!
+          Our platform supports a wide and growing range of cryptocurrencies — from staples like ETH
+          and USDC to many more on the horizon. This flexibility ensures you can always find the
+          right way to support the creators you love.
         </p>
       </div>
       <div className="max-w-[460px] grid gap-4">
@@ -61,5 +62,5 @@ export function TextDesc() {
       </div>
       {/* <p className="mt-[10px] md:mt-[60px] lg:mt-[220px]">Stories</p> */}
     </div>
-  );
+  )
 }

@@ -1,8 +1,8 @@
-import { Icon } from "@sugar/icon";
-import { useEffect, useRef } from "react";
-import { Logo } from "~/routes/landing/logo";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { Icon } from "@sugar/icon"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useEffect, useRef } from "react"
+import { Logo } from "~/routes/landing/logo"
 
 export function Footer() {
   return (
@@ -16,12 +16,13 @@ export function Footer() {
             <span className="font-cherry">Sugar</span>
             <p className="mx-auto mt-[10px] lg:mt-[30px]">
               <span className="block text-[#E8E7DC]/30">
-                It's a way to connect with the creators who inspire you
+                A meaningful way to connect with the creators who inspire you.
               </span>
-              Explore the possibilities, and.
+              Explore the possibilities—
               <br />
-              Start gifting crypto to your favorite creators.
+              start gifting crypto and show your support.
             </p>
+
             <div className="flex-grow grid place-items-center relative w-full mt-[30px] mb-[30px] lg:my-0">
               <div className="relative w-full">
                 <p
@@ -41,12 +42,12 @@ export function Footer() {
       <ListContact />
       <Logo className="absolute inset-0 h-auto" />
       <div className="absolute top-[calc(100%-220px)] lg:top-[calc(100%-72px)] left-0 lg:left-4 z-[3] bodySmall opacity-20 flex gap-[10px] origin-top-left translate-x-[5px] -rotate-90">
-        <a href="https://thisispam.com" rel="noreferrer" target="_blank">
+        <a href="#" rel="noreferrer">
           Sugar - Spread sweetness and Happiness.
         </a>
       </div>
     </footer>
-  );
+  )
 }
 
 function ListContact() {
@@ -77,73 +78,73 @@ function ListContact() {
         </a>
       </div>
     </div>
-  );
+  )
 }
 
 function AnimateCandy() {
-  const candyWrapRef = useRef<HTMLDivElement>(null);
-  const currentIndexRef = useRef<number>(0);
+  const candyWrapRef = useRef<HTMLDivElement>(null)
+  const currentIndexRef = useRef<number>(0)
 
   function animateCandy() {
     gsap.delayedCall(1.5, () => {
-      const candyWrap = document.querySelector("#candyWrapFooter");
+      const candyWrap = document.querySelector("#candyWrapFooter")
 
       if (candyWrap) {
-        const rect = candyWrap.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        const rect = candyWrap.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
 
         if (isVisible) {
-          const quoteElements = document.querySelectorAll("#candyWrapFooter > svg");
-          let i = currentIndexRef.current;
+          const quoteElements = document.querySelectorAll("#candyWrapFooter > svg")
+          let i = currentIndexRef.current
 
           // Fade out current quote
-          gsap.killTweensOf(quoteElements[i]);
+          gsap.killTweensOf(quoteElements[i])
           gsap.to(quoteElements[i], {
             opacity: 0,
             ease: "power4.out",
-          });
+          })
 
           // Move to next quote
-          i++;
+          i++
           if (i >= quoteElements.length) {
-            i = 0;
+            i = 0
           }
-          currentIndexRef.current = i;
+          currentIndexRef.current = i
 
           // Fade in next quote
           gsap.delayedCall(0.6, () => {
             gsap.to(quoteElements[i], {
               opacity: 1,
               ease: "power4.in",
-            });
-          });
+            })
+          })
         }
       }
 
       // Continue the cycle
-      animateCandy();
-    });
+      animateCandy()
+    })
   }
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger)
 
     // Initialize all quotes except the first one to be invisible
-    const candys = document.querySelectorAll("#candyWrapFooter > svg");
+    const candys = document.querySelectorAll("#candyWrapFooter > svg")
 
     candys.forEach((element, index) => {
       if (index !== 0) {
-        gsap.set(element, { opacity: 0 });
+        gsap.set(element, { opacity: 0 })
       } else {
-        gsap.set(element, { opacity: 1 });
+        gsap.set(element, { opacity: 1 })
       }
-    });
+    })
 
-    currentIndexRef.current = 0;
+    currentIndexRef.current = 0
 
     // Start the animation cycle
-    animateCandy();
-  }, []);
+    animateCandy()
+  }, [])
 
   return (
     <div
@@ -155,5 +156,5 @@ function AnimateCandy() {
       <Icon name="lollipop" className="size-[60px] absolute m-auto w-full opacity-0" />
       <Icon name="cupcake" className="size-[60px] absolute m-auto w-full opacity-0" />
     </div>
-  );
+  )
 }

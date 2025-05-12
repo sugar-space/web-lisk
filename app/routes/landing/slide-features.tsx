@@ -8,8 +8,16 @@ export function SlideFeatures() {
   const quotesWrapRef = useRef<HTMLDivElement>(null)
   const currentIndexRef = useRef<number>(0)
 
-  // Internal quotes data
-  const quotes = ["The greatest gift", "Be a loyal supporter", "Support build a vibrant community"]
+  const quotes = [
+    "The greatest gift",
+    "Be a loyal supporter",
+    "Support builds a vibrant community",
+    "Give with purpose, not pressure",
+    "Celebrate creators with crypto",
+    "Small tokens, big impact",
+    "Empower the ones who inspire you",
+    "Kindness travels onchain",
+  ]
 
   function animateQuotes() {
     gsap.delayedCall(1.5, () => {
@@ -23,7 +31,6 @@ export function SlideFeatures() {
           const quoteElements = document.querySelectorAll("#quotesWrap > div > h2")
           let i = currentIndexRef.current
 
-          // Fade out current quote
           gsap.killTweensOf(quoteElements[i])
           gsap.to(quoteElements[i], {
             opacity: 0,
@@ -31,19 +38,16 @@ export function SlideFeatures() {
             ease: "power4.in",
           })
 
-          // Move to next quote
           i++
           if (i >= quoteElements.length) {
             i = 0
           }
           currentIndexRef.current = i
 
-          // Set position for next quote
           gsap.set(quoteElements[i], {
             x: "20px",
           })
 
-          // Fade in next quote
           gsap.delayedCall(0.6, () => {
             gsap.to(quoteElements[i], {
               opacity: 1,
@@ -54,7 +58,6 @@ export function SlideFeatures() {
         }
       }
 
-      // Continue the cycle
       animateQuotes()
     })
   }
@@ -62,7 +65,6 @@ export function SlideFeatures() {
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
 
-    // Initialize all quotes except the first one to be invisible
     const quoteElements = document.querySelectorAll("#quotesWrap > div > h2")
 
     quoteElements.forEach((element, index) => {
@@ -75,7 +77,6 @@ export function SlideFeatures() {
 
     currentIndexRef.current = 0
 
-    // Start the animation cycle
     animateQuotes()
   }, [])
 
@@ -99,10 +100,8 @@ export function SlideFeatures() {
             {quote}
           </h2>
         ))}
-        {/* <button>try on</button> */}
       </div>
 
-      {/* <div className="h-[100px] aspect-square bg-red-500 rounded-full" /> */}
       <AnimateCandy />
     </div>
   )
@@ -127,21 +126,18 @@ function AnimateCandy() {
           const quoteElements = document.querySelectorAll("#candyWrap > svg")
           let i = currentIndexRef.current
 
-          // Fade out current quote
           gsap.killTweensOf(quoteElements[i])
           gsap.to(quoteElements[i], {
             opacity: 0,
             ease: "power4.out",
           })
 
-          // Move to next quote
           i++
           if (i >= quoteElements.length) {
             i = 0
           }
           currentIndexRef.current = i
 
-          // Fade in next quote
           gsap.delayedCall(0.6, () => {
             gsap.to(quoteElements[i], {
               opacity: 1,
@@ -151,15 +147,12 @@ function AnimateCandy() {
         }
       }
 
-      // Continue the cycle
       animateCandy()
     })
   }
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger)
-
-    // Initialize all quotes except the first one to be invisible
     const candys = document.querySelectorAll("#candyWrap > svg")
 
     candys.forEach((element, index) => {
@@ -172,7 +165,6 @@ function AnimateCandy() {
 
     currentIndexRef.current = 0
 
-    // Start the animation cycle
     animateCandy()
   }, [])
 
