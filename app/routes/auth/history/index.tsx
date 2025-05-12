@@ -3,6 +3,7 @@ import { Button } from "@shadcn/button"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@shadcn/table"
 import { Card } from "@sugar/card"
 import axios from "axios"
+import dayjs from "dayjs"
 import { Copy } from "lucide-react"
 import { AnimatePresence, motion } from "motion/react"
 import { useEffect, useState } from "react"
@@ -124,13 +125,13 @@ export default function TransactionHistory() {
               ))
             ) : paginatedData(outcomingData, outcomingPage).length > 0 ? (
               paginatedData(outcomingData, outcomingPage).map((item, idx) => (
-                <TableRow key={idx} onClick={() => setSelectedTx(item)}>
+                <TableRow key={idx} onClick={() => setSelectedTx(item)} className="cursor-pointer">
                   <TableCell>{item.transactionHash}</TableCell>
                   <TableCell>{item.creator}</TableCell>
                   <TableCell>
                     {item.amount} {item.tokenType}
                   </TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -147,8 +148,10 @@ export default function TransactionHistory() {
         </div>
       </Card>
 
-      <AnimatePresence>
-        {selectedTx && <DialogDetail selectedTx={selectedTx} onClose={() => setSelectedTx(null)} />}
+      <AnimatePresence mode="wait">
+        {selectedTx && (
+          <DialogDetail key="dialog" selectedTx={selectedTx} onClose={() => setSelectedTx(null)} />
+        )}
       </AnimatePresence>
     </div>
   )
@@ -177,7 +180,7 @@ function renderPaginationButtons(
   })
 }
 
-function DialogDetail({
+export function DialogDetail({
   selectedTx,
   onClose,
 }: {
@@ -185,70 +188,100 @@ function DialogDetail({
   onClose: () => void
 }) {
   const [isCopied, setIsCopied] = useState(false)
+  const [isExiting, setIsExiting] = useState(false)
+
   function handleCopy(val: string) {
     navigator.clipboard.writeText(val)
     setIsCopied(true)
+    setTimeout(() => setIsCopied(false), 1500)
+  }
+
+  function handleClose() {
+    setIsExiting(true)
   }
 
   return (
-    <div className="min-h-screen p-8">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        className="fixed inset-0 bg-black/50 backdrop-blur-md flex items-center justify-center p-4"
-        onClick={onClose}
-      >
-        <Card
-          title="🎉 Transaction Details 🎉"
-          color="pink"
-          className="max-w-md w-full"
-          onClick={(e) => e.stopPropagation()}
+    <AnimatePresence onExitComplete={onClose}>
+      {!isExiting && (
+        <motion.div
+          key="dialog"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.25 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
-          <div className="space-y-4 text-white">
-            <p className="text-sm font-bold flex justify-between">
-              Donor: <span className="font-mono font-normal">{selectedTx.from}</span>
-            </p>
-            <p className="text-sm font-bold flex justify-between">
-              Creator:
-              <span className="font-mono font-normal flex gap-2 items-center">
-                {selectedTx.creator.slice(0, 6)}...{selectedTx.creator.slice(-4)}
-                {isCopied ? (
-                  <p className="italic">Copied!</p>
-                ) : (
-                  <Copy className="cursor-pointer" onClick={() => handleCopy(selectedTx.creator)} />
-                )}
-              </span>
-            </p>
-            <p className="text-sm font-bold flex justify-between">
-              Amount:{" "}
-              <span className="font-mono font-normal">
-                {selectedTx.amount} {selectedTx.tokenType}
-              </span>
-            </p>
-            <p className="text-sm font-bold flex justify-between">
-              Date: <span className="font-mono font-normal">{selectedTx.createdAt}</span>
-            </p>
-            <p className="text-sm font-bold flex justify-between">
-              Transaction Hash:{" "}
-              <span className="font-mono font-normal flex gap-2 items-center">
-                {selectedTx.transactionHash.slice(0, 6)}...{selectedTx.transactionHash.slice(-4)}
-                {isCopied ? (
-                  <p className="italic">Copied!</p>
-                ) : (
-                  <Copy
-                    className="cursor-pointer"
-                    onClick={() => handleCopy(selectedTx.transactionHash)}
-                  />
-                )}
-              </span>
-            </p>
-          </div>
-          <Button className="mt-6 w-full font-bold py-2 rounded-lg" onClick={onClose}>
-            Close 🚀
-          </Button>
-        </Card>
-      </motion.div>
-    </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25, delay: 0.15 }}
+            className="absolute inset-0 bg-black/50 backdrop-blur-md"
+            onClick={handleClose}
+          />
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            transition={{ duration: 0.25 }}
+            className="relative max-w-md w-full pointer-events-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Card title="🎉 Transaction Details 🎉" color="pink">
+              <div className="space-y-4 text-white">
+                <p className="text-sm font-bold flex justify-between">
+                  Donor: <span className="font-mono font-normal">{selectedTx.from}</span>
+                </p>
+                <p className="text-sm font-bold flex justify-between">
+                  Creator:
+                  <span className="font-mono font-normal flex gap-2 items-center">
+                    {selectedTx.creator.slice(0, 6)}...{selectedTx.creator.slice(-4)}
+                    {isCopied ? (
+                      <span className="italic">Copied!</span>
+                    ) : (
+                      <Copy
+                        className="cursor-pointer"
+                        onClick={() => handleCopy(selectedTx.creator)}
+                      />
+                    )}
+                  </span>
+                </p>
+                <p className="text-sm font-bold flex justify-between">
+                  Amount:
+                  <span className="font-mono font-normal">
+                    {selectedTx.amount} {selectedTx.tokenType}
+                  </span>
+                </p>
+                <p className="text-sm font-bold flex justify-between">
+                  Date:{" "}
+                  <span className="font-mono font-normal">
+                    {dayjs(selectedTx.createdAt).format("YYYY-MM-DD HH:mm:ss")}
+                  </span>
+                </p>
+                <p className="text-sm font-bold flex justify-between">
+                  Transaction Hash:
+                  <span className="font-mono font-normal flex gap-2 items-center">
+                    {selectedTx.transactionHash.slice(0, 6)}...
+                    {selectedTx.transactionHash.slice(-4)}
+                    {isCopied ? (
+                      <span className="italic">Copied!</span>
+                    ) : (
+                      <Copy
+                        className="cursor-pointer"
+                        onClick={() => handleCopy(selectedTx.transactionHash)}
+                      />
+                    )}
+                  </span>
+                </p>
+              </div>
+              <Button className="mt-6 w-full font-bold py-2 rounded-lg" onClick={handleClose}>
+                Close 🚀
+              </Button>
+            </Card>
+          </motion.div>
+        </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

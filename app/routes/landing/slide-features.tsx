@@ -1,48 +1,47 @@
-import { useGSAP } from "@gsap/react";
-import { Icon } from "@sugar/icon";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useEffect, useRef, useState } from "react";
-import { cn } from "~/utils/cn";
+import { Icon } from "@sugar/icon"
+import gsap from "gsap"
+import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { useEffect, useRef } from "react"
+import { cn } from "~/utils/cn"
 
 export function SlideFeatures() {
-  const quotesWrapRef = useRef<HTMLDivElement>(null);
-  const currentIndexRef = useRef<number>(0);
+  const quotesWrapRef = useRef<HTMLDivElement>(null)
+  const currentIndexRef = useRef<number>(0)
 
   // Internal quotes data
-  const quotes = ["The greatest gift", "Be a loyal supporter", "Support build a vibrant community"];
+  const quotes = ["The greatest gift", "Be a loyal supporter", "Support build a vibrant community"]
 
   function animateQuotes() {
     gsap.delayedCall(1.5, () => {
-      const quotesWrap = document.querySelector("#quotesWrap");
+      const quotesWrap = document.querySelector("#quotesWrap")
 
       if (quotesWrap) {
-        const rect = quotesWrap.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        const rect = quotesWrap.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
 
         if (isVisible) {
-          const quoteElements = document.querySelectorAll("#quotesWrap > div > h2");
-          let i = currentIndexRef.current;
+          const quoteElements = document.querySelectorAll("#quotesWrap > div > h2")
+          let i = currentIndexRef.current
 
           // Fade out current quote
-          gsap.killTweensOf(quoteElements[i]);
+          gsap.killTweensOf(quoteElements[i])
           gsap.to(quoteElements[i], {
             opacity: 0,
             x: "-20px",
             ease: "power4.in",
-          });
+          })
 
           // Move to next quote
-          i++;
+          i++
           if (i >= quoteElements.length) {
-            i = 0;
+            i = 0
           }
-          currentIndexRef.current = i;
+          currentIndexRef.current = i
 
           // Set position for next quote
           gsap.set(quoteElements[i], {
             x: "20px",
-          });
+          })
 
           // Fade in next quote
           gsap.delayedCall(0.6, () => {
@@ -50,49 +49,51 @@ export function SlideFeatures() {
               opacity: 1,
               x: "0px",
               ease: "power4.out",
-            });
-          });
+            })
+          })
         }
       }
 
       // Continue the cycle
-      animateQuotes();
-    });
+      animateQuotes()
+    })
   }
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger)
 
     // Initialize all quotes except the first one to be invisible
-    const quoteElements = document.querySelectorAll("#quotesWrap > div > h2");
+    const quoteElements = document.querySelectorAll("#quotesWrap > div > h2")
 
     quoteElements.forEach((element, index) => {
       if (index !== 0) {
-        gsap.set(element, { opacity: 0, x: "20px" });
+        gsap.set(element, { opacity: 0, x: "20px" })
       } else {
-        gsap.set(element, { opacity: 1, x: "0px" });
+        gsap.set(element, { opacity: 1, x: "0px" })
       }
-    });
+    })
 
-    currentIndexRef.current = 0;
+    currentIndexRef.current = 0
 
     // Start the animation cycle
-    animateQuotes();
-  }, []);
+    animateQuotes()
+  }, [])
 
   return (
     <div
       id="quotesWrap"
       ref={quotesWrapRef}
-      className={cn("flex flex-row items-center px-[20px] lg:px-[50px] py-[50px]")}
+      className={cn(
+        "flex flex-col-reverse md:flex-row items-center justify-between gap-y-8 px-4 sm:px-[20px] lg:px-[50px] py-[40px]"
+      )}
     >
-      <div className="relative pointer-events-auto text-center w-full grow">
+      <div className="relative pointer-events-auto w-full grow text-center md:text-left flex items-center justify-center md:justify-start min-h-[100px]">
         {quotes.map((quote, index) => (
           <h2
             key={index}
             className={cn(
-              "text-6xl text-center md:text-left",
-              index === 0 ? "" : "absolute top-0 opacity-0"
+              "text-3xl sm:text-4xl md:text-5xl lg:text-6xl leading-tight",
+              index === 0 ? "relative" : "absolute top-0 opacity-0"
             )}
           >
             {quote}
@@ -104,76 +105,76 @@ export function SlideFeatures() {
       {/* <div className="h-[100px] aspect-square bg-red-500 rounded-full" /> */}
       <AnimateCandy />
     </div>
-  );
+  )
 }
 
 /* -------------------------------------------------------------------------- */
 /*                               Animating Candy                              */
 /* -------------------------------------------------------------------------- */
 function AnimateCandy() {
-  const candyWrapRef = useRef<HTMLDivElement>(null);
-  const currentIndexRef = useRef<number>(0);
+  const candyWrapRef = useRef<HTMLDivElement>(null)
+  const currentIndexRef = useRef<number>(0)
 
   function animateCandy() {
     gsap.delayedCall(1.5, () => {
-      const candyWrap = document.querySelector("#candyWrap");
+      const candyWrap = document.querySelector("#candyWrap")
 
       if (candyWrap) {
-        const rect = candyWrap.getBoundingClientRect();
-        const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+        const rect = candyWrap.getBoundingClientRect()
+        const isVisible = rect.top < window.innerHeight && rect.bottom > 0
 
         if (isVisible) {
-          const quoteElements = document.querySelectorAll("#candyWrap > svg");
-          let i = currentIndexRef.current;
+          const quoteElements = document.querySelectorAll("#candyWrap > svg")
+          let i = currentIndexRef.current
 
           // Fade out current quote
-          gsap.killTweensOf(quoteElements[i]);
+          gsap.killTweensOf(quoteElements[i])
           gsap.to(quoteElements[i], {
             opacity: 0,
             ease: "power4.out",
-          });
+          })
 
           // Move to next quote
-          i++;
+          i++
           if (i >= quoteElements.length) {
-            i = 0;
+            i = 0
           }
-          currentIndexRef.current = i;
+          currentIndexRef.current = i
 
           // Fade in next quote
           gsap.delayedCall(0.6, () => {
             gsap.to(quoteElements[i], {
               opacity: 1,
               ease: "power4.in",
-            });
-          });
+            })
+          })
         }
       }
 
       // Continue the cycle
-      animateCandy();
-    });
+      animateCandy()
+    })
   }
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap.registerPlugin(ScrollTrigger)
 
     // Initialize all quotes except the first one to be invisible
-    const candys = document.querySelectorAll("#candyWrap > svg");
+    const candys = document.querySelectorAll("#candyWrap > svg")
 
     candys.forEach((element, index) => {
       if (index !== 0) {
-        gsap.set(element, { opacity: 0 });
+        gsap.set(element, { opacity: 0 })
       } else {
-        gsap.set(element, { opacity: 1 });
+        gsap.set(element, { opacity: 1 })
       }
-    });
+    })
 
-    currentIndexRef.current = 0;
+    currentIndexRef.current = 0
 
     // Start the animation cycle
-    animateCandy();
-  }, []);
+    animateCandy()
+  }, [])
 
   return (
     <div
@@ -185,5 +186,5 @@ function AnimateCandy() {
       <Icon name="lollipop" className="size-[60px] absolute m-auto w-full opacity-0" />
       <Icon name="cupcake" className="size-[60px] absolute m-auto w-full opacity-0" />
     </div>
-  );
+  )
 }

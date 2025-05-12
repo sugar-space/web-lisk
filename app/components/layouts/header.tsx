@@ -11,8 +11,8 @@ export function Header({ className }: JSX.IntrinsicElements["div"]) {
         className
       )}
     >
-      <div className="flex flex-wrap w-full justify-between items-center gap-2 min-w-0">
-        <LogoStaticAnimated className="h-8 w-max" />
+      <div className="flex flex-nowrap items-center justify-between w-full gap-4 overflow-x-auto">
+        <LogoStaticAnimated className="h-8 w-auto flex-shrink-0" />
         <div className="flex-shrink-0">
           <ConnectWalletXellar />
         </div>
