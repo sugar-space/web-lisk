@@ -52,18 +52,23 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
                 {summary.length > 0 ? (
                   summary.slice(0, 9).map((val, id) => (
                     <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
-                      <TableCell className="font-medium flex flex-row gap-2 items-center">
-                        <span className="truncate max-w-[120px]">
-                          {val.transactionHash.slice(0, 10)}...{val.transactionHash?.slice(-8)}
-                        </span>
-                        {copiedHash === val.transactionHash ? (
-                          <p className="italic text-xs text-green-400">Copied!</p>
-                        ) : (
-                          <Copy
-                            className="cursor-pointer shrink-0"
-                            onClick={() => handleCopy(val.transactionHash)}
-                          />
-                        )}
+                      <TableCell className="font-medium  w-auto sm:w-[200px]">
+                        <div className="flex flex-row items-center gap-2 w-full">
+                          <span className="hidden sm:block truncate whitespace-nowrap">
+                            {val.transactionHash.slice(0, 16)}...{val.transactionHash.slice(-10)}
+                          </span>
+                          <span className="block sm:hidden truncate whitespace-nowrap">
+                            {val.transactionHash.slice(0, 8)}...{val.transactionHash.slice(-6)}
+                          </span>
+                          {copiedHash === val.transactionHash ? (
+                            <p className="italic text-xs text-green-400">Copied!</p>
+                          ) : (
+                            <Copy
+                              className="cursor-pointer shrink-0"
+                              onClick={() => handleCopy(val.transactionHash)}
+                            />
+                          )}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         {val.amount} {val.tokenType}
