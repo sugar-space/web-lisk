@@ -52,10 +52,13 @@ export default function Dashboard({ loaderData }: Route.ComponentProps) {
                 {summary.length > 0 ? (
                   summary.slice(0, 9).map((val, id) => (
                     <TableRow key={id} className="odd:bg-transparent even:bg-slate-900/10">
-                      <TableCell className="font-medium">
+                      <TableCell className="font-medium  w-auto sm:w-[200px]">
                         <div className="flex flex-row items-center gap-2 w-full">
-                          <span className="truncate max-w-[200px] flex-1 whitespace-nowrap">
+                          <span className="hidden sm:block truncate whitespace-nowrap">
                             {val.transactionHash.slice(0, 16)}...{val.transactionHash.slice(-10)}
+                          </span>
+                          <span className="block sm:hidden truncate whitespace-nowrap">
+                            {val.transactionHash.slice(0, 8)}...{val.transactionHash.slice(-6)}
                           </span>
                           {copiedHash === val.transactionHash ? (
                             <p className="italic text-xs text-green-400">Copied!</p>

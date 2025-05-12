@@ -87,7 +87,7 @@ export default function TransactionHistory() {
                   <TableCell>
                     {item.amount} {item.tokenType}
                   </TableCell>
-                  <TableCell>{item.createdAt}</TableCell>
+                  <TableCell>{dayjs(item.createdAt).format("HH:mm:ss ~ DD MMM YYYY")}</TableCell>
                 </TableRow>
               ))
             ) : (
@@ -131,7 +131,7 @@ export default function TransactionHistory() {
                   <TableCell>
                     {item.amount} {item.tokenType}
                   </TableCell>
-                  <TableCell>{dayjs(item.createdAt).format("YYYY-MM-DD HH:mm:ss")}</TableCell>
+                  <TableCell>{dayjs(item.createdAt).format("HH:mm:ss ~ DD MM YYYY")}</TableCell>
                 </TableRow>
               ))
             ) : (

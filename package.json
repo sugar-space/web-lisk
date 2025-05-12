@@ -6,7 +6,7 @@
     "build:icons": "tsx ./app/builder/build-icons.ts --log verbose",
     "build": "npm run build:icons && react-router build",
     "dev": "npm run build:icons && react-router dev",
-    "start": "react-router-serve ./build/server/index.js",
+    "start": "PORT=5173 react-router-serve ./build/server/index.js",
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
@@ -76,6 +76,5 @@
     "overrides": {
       "use-sync-external-store": "$use-sync-external-store"
     }
-  },
-  "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e"
+  }
 }

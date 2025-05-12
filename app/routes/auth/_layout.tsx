@@ -34,7 +34,7 @@ export default function LayoutAuth() {
             <ConnectWalletXellar />
           </div>
         </div>
-        <div className="pb-48">
+        <div className="pb-48 overflow-x-hidden">
           <Outlet />
         </div>
       </div>
