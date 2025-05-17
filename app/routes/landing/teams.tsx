@@ -49,7 +49,7 @@ export function Teams() {
           </p>
         </div>
         <div className="col-span-6">
-          <div id="cards" className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+          <div id="cards" className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {ITEMS.map((val, idx) => {
               return (
                 <article key={idx} className="flex flex-col gap-2">

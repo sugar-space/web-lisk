@@ -72,7 +72,7 @@ function ListContact() {
           href="#"
           target="_blank"
           rel="noreferrer"
-          className="uppercase tracking-[-0.02em] font-normal ml-[10px] hover:opacity-[0.5]"
+          className="uppercase tracking-[-0.02em] font-normal hover:opacity-[0.5]"
         >
           Happiness
         </a>

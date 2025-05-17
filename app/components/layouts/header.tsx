@@ -7,7 +7,7 @@ export function Header({ className }: JSX.IntrinsicElements["div"]) {
   return (
     <div
       className={cn(
-        "absolute lg:fixed left-0 w-full py-[10px] md:py-[25px] px-4 sm:px-6 md:px-10 z-20 backdrop-blur-md",
+        "absolute lg:fixed left-0 w-full py-6 px-4 sm:px-6 md:px-10 z-20 backdrop-blur-md",
         className
       )}
     >
