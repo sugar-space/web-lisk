@@ -1,65 +1,78 @@
-# Sugar
+# 🍬 Sugar
 
-an apps lorem ipsum
+**Sugar** is a decentralized application redefining community interaction and live-streaming monetization through Web3-native infrastructure. Built to empower streamers and their audiences with crypto-native tools, Sugar enables seamless gifting, transparency, and engagement.
 
-## Stack
+---
 
-Tech Stack
+## 👨‍💻 Core Team
 
-### Frontend
+- **Rei Yan** – Infrastructure & Backend
+- **Joe** – Frontend & Operation
+- **Rama** – Frontend & Smart Contract
 
-> _[Repository](https://github.com/sugar-space/web)_
+---
 
-- Remix React (\*), based on:
-  - react router (\*)
-  - vite (\*)
-- wagmi (\*)
-- viem@2.x
-- tailwindcss (\*)
-- shadcn (\*)
-- framer-motion -> motion.dev (\*)
-- gsap (\*)
+## 🚀 Tech Stack
 
-### Backend
+### 📱 Frontend
 
-> _[Repository](https://github.com/sugar-space/engine)_
+> _[Frontend Repository](https://github.com/sugar-space/web-lisk)_
 
-- express
-- viem
-- rabbitmq
-- websocket
-- mongodb
+- **Remix (React-based)**  
+  - React Router  
+  - Vite  
+- **Wagmi**  
+- **Viem@2.x**  
+- **TailwindCSS**  
+- **ShadCN**  
+- **Framer Motion** (motion.dev)  
+- **GSAP**
 
-### Contract
+---
 
-> _[Repository](https://github.com/sugar-space/contract)_
+### 🧠 Backend
 
-- foundry-rs/forge-std
-- OpenZeppelin/openzeppelin-contracts
+> _[Backend Repository](https://github.com/sugar-space/engine-lisk)_
 
-### Container Registry
+- **Express**
+- **Viem**
+- **RabbitMQ**
+- **WebSocket**
+- **MongoDB**
 
-> _[Images](https://github.com/orgs/sugar-space/packages)_
+---
 
-- Github Container Registry
+### 🛠 Smart Contract
 
-### Infra
+> _[Contract Repository](https://github.com/sugar-space/contract)_
 
-> _[Repository](https://github.com/sugar-space/infra)_
+- **Foundry** (`forge-std`)
+- **OpenZeppelin Contracts**
 
-- Nomad:
+---
 
-  - replicated 3 instance per services
+### ☁️ Infrastructure
 
-- Consul - Service Discovery
-- Docker
-- iptables
+> _[Infra Repository](https://github.com/sugar-space/infra)_
 
-### CI/CD
+- **Nomad** – 3 replicated service instances
+- **Consul** – Service discovery
+- **Docker**
+- **iptables**
 
-Well integrated
+---
 
-### Security
+### 🔁 CI/CD
 
-- Domain
-  - Zero Trust Cloudflare
+- Fully integrated pipelines
+- Seamless dev-to-prod deployments
+
+---
+
+### 🔐 Security
+
+- Cloudflare Zero Trust protected domain
+
+---
+
+> Sugar is built during the Pelita Bangsa Academy Bootcamp until now, to showcase the real-world potential of crypto-based streaming.
