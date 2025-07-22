@@ -1,4 +1,4 @@
-import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes";
+import { type RouteConfig, index, layout, prefix, route } from "@react-router/dev/routes"
 
 export default [
   layout("./routes/_layout.tsx", [
@@ -34,8 +34,9 @@ export default [
 
   route("/alerts", "./routes/guest/alert.tsx"),
   route("/mediashare", "./routes/guest/mediashare.tsx"),
+  route("/qr", "./routes/guest/qr.tsx"),
   // route("/reducer", "./routes/guest/reducer.tsx"),
   route("/:username", "./routes/guest/donate-by-username/index.tsx"),
 
   route("/connect", "./routes/auth/connect.tsx"),
-] satisfies RouteConfig;
+] satisfies RouteConfig

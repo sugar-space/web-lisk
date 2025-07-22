@@ -1,7 +1,7 @@
-import * as React from "react";
-import * as TabsPrimitive from "@radix-ui/react-tabs";
+import * as React from "react"
+import * as TabsPrimitive from "@radix-ui/react-tabs"
 
-import { cn } from "~/utils/cn";
+import { cn } from "~/utils/cn"
 
 function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Root>) {
   return (
@@ -10,7 +10,7 @@ function Tabs({ className, ...props }: React.ComponentProps<typeof TabsPrimitive
       className={cn("flex flex-col gap-2", className)}
       {...props}
     />
-  );
+  )
 }
 
 function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.List>) {
@@ -27,7 +27,7 @@ function TabsList({ className, ...props }: React.ComponentProps<typeof TabsPrimi
       // )}
       {...props}
     />
-  );
+  )
 }
 
 function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
@@ -39,12 +39,12 @@ function TabsTrigger({ className, ...props }: React.ComponentProps<typeof TabsPr
       //   className
       // )}
       className={cn(
-        "mx-2 -mb-[2px] inline-flex items-center justify-start whitespace-nowrap border-b-2 px-2 py-2 text-base font-medium transition-all first-of-type:ml-0 disabled:pointer-events-none disabled:text-muted-foreground data-[state=active]:border-primary data-[state=inactive]:border-transparent data-[state=active]:font-semibold data-[state=active]:text-foreground cursor-pointer",
+        "mx-2 -mb-[2px] inline-flex items-center justify-start whitespace-nowrap border-b-2 px-2 py-2 text-base font-medium transition-all first-of-type:ml-0 disabled:pointer-events-none disabled:text-muted-foreground data-[state=active]:border-primary data-[state=inactive]:border-transparent data-[state=active]:text-foreground cursor-pointer",
         className
       )}
       {...props}
     />
-  );
+  )
 }
 
 function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPrimitive.Content>) {
@@ -58,7 +58,7 @@ function TabsContent({ className, ...props }: React.ComponentProps<typeof TabsPr
       )}
       {...props}
     />
-  );
+  )
 }
 
-export { Tabs, TabsList, TabsTrigger, TabsContent };
+export { Tabs, TabsList, TabsTrigger, TabsContent }

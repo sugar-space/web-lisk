@@ -52,7 +52,7 @@ export default function OverlaysPage() {
   const [isCopied, setIsCopied] = useState(false)
   const [isSuccedTest, setIsSuccedTest] = useState(false)
 
-  const tabs = ["alerts", "mediashare"]
+  const tabs = ["alerts", "mediashare", "qr"]
 
   function testNotification(val: string) {
     fetcher.submit({ type: val }, { method: "POST" })
@@ -117,11 +117,13 @@ export default function OverlaysPage() {
               </div>
             </div>
 
-            <div className="flex justify-end">
-              <ButtonMagnet onClick={() => testNotification(val)} className="capitalize w-max">
-                Test {val}
-              </ButtonMagnet>
-            </div>
+            {val !== "qr" && (
+              <div className="flex justify-end">
+                <ButtonMagnet onClick={() => testNotification(val)} className="capitalize w-max">
+                  Test {val}
+                </ButtonMagnet>
+              </div>
+            )}
           </TabsContent>
         ))}
       </Tabs>
