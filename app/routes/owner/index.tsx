@@ -18,7 +18,7 @@ import { COINS } from "~/constants/coins"
 import { cn } from "~/utils/cn"
 import type { Route } from "./+types"
 import { createPublicClient, formatUnits, http } from "viem"
-import { liskSepolia, sepolia } from "viem/chains"
+import { liskSepolia, lisk } from "viem/chains"
 import { getWalletSession } from "@services/cookie"
 import { getSocialMetas } from "~/utils/seo"
 
@@ -35,7 +35,7 @@ export function meta({}: Route.MetaArgs) {
 export async function loader({ request }: Route.LoaderArgs) {
   const session = await getWalletSession(request)
   const client = createPublicClient({
-    chain: liskSepolia,
+    chain: lisk,
     transport: http(),
     // chain: sepolia,
     // transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),

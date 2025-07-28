@@ -2,7 +2,7 @@ import { createClient, http } from "viem"
 import { type Config, createConfig } from "wagmi"
 import { injected, metaMask } from "wagmi/connectors"
 import { XellarKitProvider, defaultConfig, darkTheme } from "@xellar/kit"
-import { liskSepolia, sepolia } from "viem/chains"
+import { liskSepolia, lisk, sepolia } from "viem/chains"
 
 export const WAGMI_CONFIG = createConfig({
   chains: [sepolia],
@@ -22,7 +22,7 @@ export const WAGMI_XELLAR_CONFIG = defaultConfig({
   xellarAppId: "bb2e8da5-2b62-4288-8297-c2f68a84a076",
   xellarEnv: "sandbox",
   chains: [
-    liskSepolia,
+    lisk,
     // sepolia,
   ],
   ssr: true,

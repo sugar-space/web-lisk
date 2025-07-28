@@ -1,2 +1,2 @@
 // Contract address for the donation contract
-export const CONTRACT_ADDRESS = "0x2A3c68c841F1ee5004aF649E93b190Bfa2a58A2e"
+export const CONTRACT_ADDRESS = "0x73b96894e2f31D104Cf5332ba9dF89c8715D6548"

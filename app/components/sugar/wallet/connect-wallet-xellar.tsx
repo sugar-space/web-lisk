@@ -13,12 +13,12 @@ import { ChevronDown, LogOut } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { NavLink, useSubmit } from "react-router"
 import { ClientOnly } from "remix-utils/client-only"
-import { liskSepolia } from "viem/chains"
+import { liskSepolia, lisk } from "viem/chains"
 import { useAccount, useSwitchChain } from "wagmi"
 import { useSugarWallet } from "./provider"
 
 export function ConnectWalletXellar() {
-  const FIXED_CHAIN = liskSepolia.id
+  const FIXED_CHAIN = lisk.id
   const submit = useSubmit()
   const { open: openModalXellar } = useConnectModal()
   const { isConnected, address, disconnect } = useSugarWallet()

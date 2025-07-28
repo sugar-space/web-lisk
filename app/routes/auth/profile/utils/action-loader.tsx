@@ -3,7 +3,7 @@ import { createAvatar } from "@dicebear/core"
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
 import { createPublicClient, formatUnits, http } from "viem"
-import { liskSepolia } from "viem/chains"
+import { liskSepolia, lisk } from "viem/chains"
 import { ABI } from "~/constants/ABI"
 import { CONTRACT_ADDRESS } from "~/constants/CA"
 import { COINS } from "~/constants/coins"
@@ -45,7 +45,7 @@ export async function loader({ request }: Route.LoaderArgs) {
   const filteredTokens = []
 
   if (checkAddress.data.success) {
-    const client = createPublicClient({ chain: liskSepolia, transport: http() })
+    const client = createPublicClient({ chain: lisk, transport: http() })
 
     for (const token of COINS) {
       let balanceRaw = await client.readContract({

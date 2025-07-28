@@ -1,5 +1,5 @@
 import { redirect } from "react-router"
-import { liskSepolia, sepolia } from "viem/chains"
+import { liskSepolia, lisk } from "viem/chains"
 import { createPublicClient, http } from "viem"
 import { getWalletSession } from "@services/cookie"
 import axios from "axios"
@@ -34,7 +34,7 @@ export async function loader({ params, request }: Route.LoaderArgs) {
     }
 
     const client = createPublicClient({
-      chain: liskSepolia,
+      chain: lisk,
       transport: http(),
       // chain: sepolia,
       // transport: http("https://sepolia.infura.io/v3/ff13c1b25d9f4e939b5143372e0f5f41"),
