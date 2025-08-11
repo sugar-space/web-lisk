@@ -11,7 +11,7 @@ job "job-web-prod" {
   datacenters = ["dc1"]
 
   group "group-web-prod" {
-    count = 1
+    count = 3
     network {
       port "http" {
         to = -1
