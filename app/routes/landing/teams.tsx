@@ -87,7 +87,7 @@ const ITEMS = [
   {
     name: "Johanes",
     as: "Team",
-    image: "https://ik.imagekit.io/3592mo0vh/img/johanes.jpg",
+    image: "https://ik.imagekit.io/3592mo0vh/adib.png",
     from: "Sugar",
   },
   // {
