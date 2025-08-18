@@ -74,19 +74,19 @@ export function Teams() {
 const ITEMS = [
   {
     name: "Rei Yan",
-    as: "Team",
+    as: "CEO",
     image: "https://ik.imagekit.io/happycuan/teams/673875ce11b15b80950a1116",
-    from: "CEO",
+    from: "Sugar",
   },
   {
     name: "Rama",
-    as: "Team",
+    as: "CTO",
     image: "https://ik.imagekit.io/happycuan/teams/673873cc11b15b80950a110a",
-    from: "CTO",
+    from: "Sugar",
   },
   {
-    name: "COO",
-    as: "Team",
+    name: "Adib",
+    as: "COO",
     image: "https://ik.imagekit.io/3592mo0vh/adib.png",
     from: "Sugar",
   },
